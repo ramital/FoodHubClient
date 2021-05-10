@@ -24,26 +24,10 @@ class TopSearch extends React.Component {
 	                  <div className="homepage-search-form">
 	                     <Form className="form-noborder">
 	                        <div className="form-row">
-	                           <Form.Group className='col-lg-3 col-md-3 col-sm-12'>
-	                              <div className="location-dropdown">
-	                              	 <Icofont icon='location-arrow'/>
-	                                 <Select2 className="custom-select"
-		                                 data={[
-										    { text: 'Breakfast', id: 1 },
-										    { text: 'Lunch', id: 2 },
-										    { text: 'Dinner', id: 3 },
-										    { text: 'Cafés', id: 4 },
-										    { text: 'Delivery', id: 5 }
-										  ]}
-										  options={{
-										    placeholder: 'Quick Searches',
-										  }}
-	                                 />
-	                              </div>
-	                           </Form.Group>
-	                           <Form.Group className='col-lg-7 col-md-7 col-sm-12'>
-	                              <Form.Control type="text" placeholder="Enter your delivery location" size='lg' />
-	                              <Link className="locate-me" to="#"><Icofont icon='ui-pointer'/> Locate Me</Link>
+	                       
+	                           <Form.Group className='col-lg-10 col-md-10 col-sm-12'>
+	                              <Form.Control type="text" placeholder="Search here..." size='lg' />
+	                              
 	                           </Form.Group>
 	                           <Form.Group className='col-lg-2 col-md-2 col-sm-12'>
 	                              <Link to="listing" className="btn btn-primary btn-block btn-lg btn-gradient">Search</Link>
@@ -73,14 +57,7 @@ class TopSearch extends React.Component {
 							   		linkUrl='listing'
 							   	/>
 	                        </div>
-	                        <div className="item">
-								<ProductBox 
-							   		image='img/general/BannerOffer3.jpg'
-							   		imageClass='img-fluid rounded'
-							   		imageAlt='carousel'
-							   		linkUrl='listing'
-							   	/>
-	                        </div>
+	                   
 	                     </OwlCarousel>
 	                  </div>
 	               </Col>

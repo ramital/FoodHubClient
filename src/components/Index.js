@@ -16,10 +16,15 @@ class Index extends React.Component {
     			<TopSearch />
 				<section className="section pt-5 pb-5 bg-white homepage-add-section">
 					<Container>
-						<Row>
+						<SectionHeading 
+								heading='Trending Restaurants'
+								subHeading='Top Four Trending Chosen for You'
+							/>
+						 <Row>
+					
 						   <Col md={3} xs={6}>
 						   	<ProductBox 
-						   		image='img/pro1.jpg'
+						   		image='img/general/roadster.jpg'
 						   		imageClass='img-fluid rounded'
 						   		imageAlt='product'
 						   		linkUrl='#'
@@ -27,7 +32,7 @@ class Index extends React.Component {
 						   </Col>
 						   <Col md={3} xs={6}>
 						   	<ProductBox 
-						   		image='img/2.jpg'
+						   		image='img/general/pf.jpg'
 						   		imageClass='img-fluid rounded'
 						   		imageAlt='product'
 						   		linkUrl='#'
@@ -35,7 +40,7 @@ class Index extends React.Component {
 						   </Col>
 						   <Col md={3} xs={6}>
 						   	<ProductBox 
-						   		image='img/pro3.jpg'
+						   		image='img/general/casper.jpg'
 						   		imageClass='img-fluid rounded'
 						   		imageAlt='product'
 						   		linkUrl='#'
@@ -43,7 +48,7 @@ class Index extends React.Component {
 						   </Col>
 						   <Col md={3} xs={6}>
 						   	<ProductBox 
-						   		image='img/pro4.jpg'
+						   		image='img/general/divvy.jpg'
 						   		imageClass='img-fluid rounded'
 						   		imageAlt='product'
 						   		linkUrl='#'
@@ -67,7 +72,7 @@ class Index extends React.Component {
 								   		title='World Famous'
 										subTitle='North Indian • American • Pure veg'
 									  	imageAlt='Product'
-									    image='img/list/1.png'
+									    image='img/uploaded/burger.jpg'
 									    imageClass='img-fluid item-img'
 									    linkUrl='detail'
 									    offerText='65% off | Use Coupon OSAHAN50'
@@ -84,7 +89,7 @@ class Index extends React.Component {
 								   		title='Bite Me Sandwiches'
 										subTitle='North Indian • American • Pure veg'
 									  	imageAlt='Product'
-									    image='img/list/3.png'
+									    image='img/uploaded/Sand.jpg'
 									    imageClass='img-fluid item-img'
 									    linkUrl='detail'
 									    offerText='65% off | Use Coupon OSAHAN50'
@@ -101,7 +106,7 @@ class Index extends React.Component {
 								   		title='The osahan Restaurant'
 										subTitle='North Indian • American • Pure veg'
 									  	imageAlt='Product'
-									    image='img/list/6.png'
+									    image='img/uploaded/pizza.jpg'
 									    imageClass='img-fluid item-img'
 									    linkUrl='detail'
 									    offerText='65% off | Use Coupon OSAHAN50'
@@ -118,7 +123,7 @@ class Index extends React.Component {
 								   		title='Polo Lounge'
 										subTitle='North Indian • American • Pure veg'
 									  	imageAlt='Product'
-									    image='img/list/9.png'
+									    image='img/uploaded/Indian.jpg'
 									    imageClass='img-fluid item-img'
 									    linkUrl='detail'
 									    offerText='65% off | Use Coupon OSAHAN50'
@@ -139,7 +144,7 @@ class Index extends React.Component {
 			         <Container>
 			         	<SectionHeading 
 			         		heading='Become a Member'
-			         		subHeading='Lorem Ipsum is simply dummy text of'
+			         		subHeading='Join us Now'
 			         	/>
 			            <Row>
 			               <Col sm={12} className="text-center">
