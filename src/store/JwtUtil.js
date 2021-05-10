@@ -1,11 +1,17 @@
 import LocalStorageUtil from './LocalStorageUtil'
 
+const JWT = "jwt";
+
 function storeToken(token){
-    LocalStorageUtil.store("jwt", token);
+    LocalStorageUtil.store(JWT, token);
 }
 
 function getToken(){
-    return LocalStorageUtil.get("jwt");
+    return LocalStorageUtil.get(JWT);
 }
 
-export default {storeToken, getToken}
+function clearToken(){
+    return LocalStorageUtil.remove(JWT);
+}
+
+export default {storeToken, getToken, clearToken}

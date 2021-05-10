@@ -1,21 +1,29 @@
 import React from 'react';
-import {NavLink,Link} from 'react-router-dom';
+import {NavLink,Link, useHistory, Redirect} from 'react-router-dom';
 import {Navbar,Nav,Container,NavDropdown,Image,Badge} from 'react-bootstrap';
 import DropDownTitle from '../common/DropDownTitle';
 import CartDropdownHeader from '../cart/CartDropdownHeader';
 import CartDropdownItem from '../cart/CartDropdownItem';
 import Icofont from 'react-icofont';
+import JwtUtil from '../../store/JwtUtil';
+
+import jwt_decode from 'jwt-decode'
 
 class Header extends React.Component {
+
 	constructor(props) {
 	    super(props);
 	    this.state = {
-	      isNavExpanded: false
+	      isNavExpanded: false,
+		  username: null
 	    };
+		
 	}
+
     setIsNavExpanded = (isNavExpanded) => {
       this.setState({ isNavExpanded: isNavExpanded });
     }
+
     closeMenu = () => {
       this.setState({ isNavExpanded: false });
     }
@@ -29,14 +37,30 @@ class Header extends React.Component {
       }
     }
   
-	componentDidMount() {
-	    document.addEventListener('click', this.handleClick, false);      
+	componentDidMount() {				
+	    document.addEventListener('click', this.handleClick, false);
+
+		const token = JwtUtil.getToken();
+		if (token){
+			const decoded = jwt_decode(token);
+			this.setState({ username: decoded.sub });
+		}
+		else {
+			this.setState({ username: null });
+		}
+	}
+
+	handleLogout(){
+		JwtUtil.clearToken();
+		this.setState({ username: null });
 	}
 
 	componentWillUnmount() {
 	    document.removeEventListener('click', this.handleClick, false);
 	}
+
 	render() {
+
     	return (
     		<div ref={node => this.node = node}>
 			<Navbar onToggle={this.setIsNavExpanded}
@@ -59,23 +83,28 @@ class Header extends React.Component {
              				<Icofont icon='sale-discount'/> Offers <Badge variant="danger">New</Badge>
 			            </Nav.Link>
 			            
-			            <NavDropdown alignRight
+
+						{this.state.username?										            
+							<React.Fragment>
+							<NavDropdown alignRight
 			            	title={
 			            		<DropDownTitle 
 			            			className='d-inline-block' 
 			            			image="img/general/usr.png"
 			            			imageAlt='user'
 			            			imageClass="nav-osahan-pic rounded-pill"
-			            			title='My Account'
+			            			title={this.state.username}
 			            		/>
 			            	}
 			            >
 					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/profile"><Icofont icon='icofont-user'/> Profile</NavDropdown.Item>
 				 		 
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
-							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/login"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => this.handleLogout()} to="/logout"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
 				 		  </NavDropdown>
-			            <NavDropdown activeclassname="active" alignRight className="dropdown-cart" 
+						   
+			            	<NavDropdown activeclassname="active" alignRight className="dropdown-cart" 
+
 			            	title={
 			            		<DropDownTitle 
 			            			className='d-inline-block' 
@@ -130,7 +159,17 @@ class Header extends React.Component {
 							  </div>
 			                </div>
 			            </NavDropdown>
-			         </Nav>
+							</React.Fragment>:
+						
+
+					
+							<Nav.Link eventKey={1} as={NavLink} activeclassname="active" to="/login">
+							<Icofont icon='login'/> Login
+							</Nav.Link>
+						
+					}
+
+					 </Nav>
 			      </Navbar.Collapse>
 			   </Container>
 			</Navbar>

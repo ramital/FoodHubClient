@@ -21,22 +21,13 @@ import 'react-select2-wrapper/css/select2.css';
 import './App.css';
 import {APIConfig} from './store/APIConfig';
 import JwtUtil from './store/JwtUtil'
+import Logout from './components/Logout';
 
 const APIs = {
     Authentication: 'http://localhost:8080/authentication'
 }
 
 const App = (props) => {
-
-  const [token, setToken] = useState(JwtUtil.getToken());
-  useEffect(() => {
-    const currentToken = token;
-    JwtUtil.storeToken(currentToken);
-  }, [token]);
-
-  if (token){
-    console.log("token: " + token);
-  }
 
   return (
 
@@ -46,13 +37,14 @@ const App = (props) => {
           (props.location.pathname!=='/login' && props.location.pathname!=='/register') ? <Header/>:''
         }
         <Switch>
-          <Route path="/" exact component={Index} />
+          <Route path="/" exact component={Index} />          
           <Route path="/offers" exact component={Offers} />
           <Route path="/listing" exact component={List} />
           <Route path="/myaccount" component={MyAccount} />
           <Route path="/404" exact component={NotFound} />
           <Route path="/extra" exact component={Extra} />
           <Route path="/login" exact component={Login} />
+          <Route path="/logout" exact component={Logout} />
           <Route path="/register" exact component={Register} />
           <Route path="/track-order" exact component={TrackOrder} />
           <Route path="/invoice" exact component={Invoice} />
