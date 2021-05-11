@@ -45,8 +45,8 @@ const Login = (props) => {
 							<h3 className="login-heading mb-4">Welcome back!</h3>
 							<Form>
 								<div className="form-label-group">
-									<Form.Control type="email" id="inputEmail" placeholder="Email address" ref={uidRef} />
-									<Form.Label htmlFor="inputEmail">Email address</Form.Label>
+									<Form.Control type="text" id="inputEmail" placeholder="Email address" ref={uidRef} />
+									<Form.Label htmlFor="inputEmail">User name</Form.Label>
 								</div>
 								<div className="form-label-group">
 									<Form.Control type="password" id="inputPassword" placeholder="Password" ref={pwdRef} />

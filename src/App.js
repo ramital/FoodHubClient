@@ -24,7 +24,8 @@ import Logout from './components/Logout';
 
 const APIs = {
     Authentication: 'http://localhost:8080/authentication',
-    User: 'http://localhost:8080/api/users'
+    User: 'http://localhost:8080/api/users',
+    Signup: 'http://localhost:8080/users',
 }
 
 const App = (props) => {
