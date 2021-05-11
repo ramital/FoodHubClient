@@ -21,9 +21,11 @@ import 'react-select2-wrapper/css/select2.css';
 import './App.css';
 import {APIConfig} from './store/APIConfig';
 import JwtUtil from './store/JwtUtil'
+import MyRestaurant from './components/MyRestaurant';
 
 const APIs = {
     Authentication: 'http://localhost:8080/authentication'
+    , restaurant: 'http://localhost:8080/restaurant/'
 }
 
 const App = (props) => {
@@ -42,13 +44,13 @@ const App = (props) => {
 
     <APIConfig.Provider value={APIs}>
     <React.Fragment>
-        {
-          (props.location.pathname!=='/login' && props.location.pathname!=='/register') ? <Header/>:''
-        }
+    <Header/>
+     
         <Switch>
           <Route path="/" exact component={Index} />
           <Route path="/offers" exact component={Offers} />
           <Route path="/listing" exact component={List} />
+          <Route path="/myrestaurant" component={MyRestaurant} />
           <Route path="/myaccount" component={MyAccount} />
           <Route path="/404" exact component={NotFound} />
           <Route path="/extra" exact component={Extra} />
@@ -58,12 +60,11 @@ const App = (props) => {
           <Route path="/invoice" exact component={Invoice} />
           <Route path="/checkout" exact component={Checkout} />
           <Route path="/thanks" exact component={Thanks} />
-          <Route path="/detail" exact component={Detail} />
+          <Route path="/detail"  component={Detail} />
           <Route exact component={NotFound} />
         </Switch>
-        {
-          (props.location.pathname!=='/login' && props.location.pathname!=='/register') ? <Footer/>:''
-        }
+      
+         <Footer/>
     </React.Fragment>
     </APIConfig.Provider>
   );

@@ -51,12 +51,12 @@ class Header extends React.Component {
 			      <Navbar.Collapse id="navbarNavDropdown">
 			         <Nav activeKey={0} className="ml-auto" onSelect={this.closeMenu}>
 					
-						<Nav.Link eventKey={0} as={NavLink} activeclassname="active" exact to="/">
-			               Home <span className="sr-only">(current)</span>
+						<Nav.Link eventKey={0} as={NavLink} exact to="/">
+			               Home 
 			            </Nav.Link>
 
-			            <Nav.Link eventKey={1} as={NavLink} activeclassname="active" to="/offers">
-             				<Icofont icon='sale-discount'/> Offers <Badge variant="danger">New</Badge>
+			            <Nav.Link eventKey={1} as={NavLink}   to="/offers">
+             				<Icofont icon='sale-discount'/> Offers  
 			            </Nav.Link>
 			            
 			            <NavDropdown alignRight
@@ -75,6 +75,24 @@ class Header extends React.Component {
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/login"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
 				 		  </NavDropdown>
+
+
+						   <NavDropdown alignRight
+			            	title={
+			            		<DropDownTitle 
+			            			className='d-inline-block' 
+			            			image="img/uploaded/burger.jpg"
+			            			imageAlt='user'
+			            			imageClass="nav-osahan-pic rounded-pill"
+			            			title='My Restaurant'
+			            		/>
+			            	}
+			            >
+					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/profile"><Icofont icon='icofont-user'/> Profile</NavDropdown.Item>
+				 		 
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
+						 
+						 	  </NavDropdown>
 			            <NavDropdown activeclassname="active" alignRight className="dropdown-cart" 
 			            	title={
 			            		<DropDownTitle 

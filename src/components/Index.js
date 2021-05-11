@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {Row,Col,Container} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import OwlCarousel from 'react-owl-carousel3';
@@ -7,139 +7,102 @@ import ProductBox from './home/ProductBox';
 import CardItem from './common/CardItem';
 import SectionHeading from './common/SectionHeading';
 import FontAwesome from './common/FontAwesome';
+import axios from 'axios';
+import { APIConfig } from '../store/APIConfig';
 
-class Index extends React.Component {
+// class Index extends React.Component {
 
-	render() {
+	const Index  = (props) => {
+ 
+		const APIs = useContext(APIConfig);
+		const link = APIs.restaurant;
+		const [posts, setPosts] = useState([]);
+   
+		const options={
+		responsive: {
+			0:{
+				items:1,
+			},
+			600:{
+				items:2,
+			},
+			1000: {
+			items: 4,
+			},
+			1200: {
+			items: 4,
+			},
+		},
+
+			lazyLoad: true,
+			pagination: false.toString(),
+			loop: false,
+			dots: true,
+			autoPlay: 2000,
+			nav: true,
+			navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
+	}
+
+	useEffect(fetchPostsHandler, []);  
+   
+	function fetchPostsHandler() {
+        const headers = {
+            'Access-Control-Allow-Origin': '*', 
+        } 
+    	   axios(link, { headers })
+            .then(response => {
+				 setPosts(response.data.restaurants);
+            })
+            .catch(error => {
+               
+            })
+
+    }
+
+	
+    const cards = posts.map(post => {
+       
+		return <Col md={3} xs={6}>
+		<div className="item">
+					<CardItem 
+				   key={post.id}
+				  title={post.name}
+				  subTitle={post.smallDescription}
+				  imageAlt='Product'
+				  image={post.profileImage} 
+				  imageClass='img-fluid item-img'
+				  linkUrl={'detail/'+ post.id}
+				  offerText='65% off | Use Coupon OSAHAN50'
+				  time={post.deliveredtime}//'20–25 min'
+				  price='$250 FOR TWO'
+				  showPromoted={true}
+				  promotedVariant='dark'
+				  favIcoIconColor='text-danger'
+				  rating='3.1 (300+)'
+				 />
+		   </div>	</Col>
+		  });
+ 
+
+
     	return (
     		<>
     			<TopSearch />
 				<section className="section pt-5 pb-5 bg-white homepage-add-section">
 					<Container>
 						<SectionHeading 
-								heading='Trending Restaurants'
+								heading='Promoted Restaurants'
 								subHeading='Top Four Trending Chosen for You'
 							/>
 						 <Row>
 					
-						   <Col md={3} xs={6}>
-						   	<ProductBox 
-						   		image='img/general/roadster.jpg'
-						   		imageClass='img-fluid rounded'
-						   		imageAlt='product'
-						   		linkUrl='#'
-						   	/>
-						   </Col>
-						   <Col md={3} xs={6}>
-						   	<ProductBox 
-						   		image='img/general/pf.jpg'
-						   		imageClass='img-fluid rounded'
-						   		imageAlt='product'
-						   		linkUrl='#'
-						   	/>
-						   </Col>
-						   <Col md={3} xs={6}>
-						   	<ProductBox 
-						   		image='img/general/casper.jpg'
-						   		imageClass='img-fluid rounded'
-						   		imageAlt='product'
-						   		linkUrl='#'
-						   	/>
-						   </Col>
-						   <Col md={3} xs={6}>
-						   	<ProductBox 
-						   		image='img/general/divvy.jpg'
-						   		imageClass='img-fluid rounded'
-						   		imageAlt='product'
-						   		linkUrl='#'
-						   	/>
-						   </Col>
+						 {cards}
+						 
 						</Row>
 					</Container>
 				</section>
 
-			    <section className="section pt-5 pb-5 products-section">
-			         <Container>
-			         	<SectionHeading 
-			         		heading='Popular Brands'
-			         		subHeading='Top restaurants, cafes, pubs, and bars in Ludhiana, based on trends'
-			         	/>
-			            <Row>
-			               <Col md={12}>
-			               	  <OwlCarousel nav loop {...options} className="owl-carousel-four owl-theme">
-			                     <div className="item">
-			                        <CardItem 
-								   		title='World Famous'
-										subTitle='North Indian • American • Pure veg'
-									  	imageAlt='Product'
-									    image='img/uploaded/burger.jpg'
-									    imageClass='img-fluid item-img'
-									    linkUrl='detail'
-									    offerText='65% off | Use Coupon OSAHAN50'
-										time='20–25 min'
-										price='$250 FOR TWO'
-										showPromoted={true}
-										promotedVariant='dark'
-										favIcoIconColor='text-danger'
-										rating='3.1 (300+)'
-								   	/>
-			                     </div>
-			                     <div className="item">
-			                        <CardItem 
-								   		title='Bite Me Sandwiches'
-										subTitle='North Indian • American • Pure veg'
-									  	imageAlt='Product'
-									    image='img/uploaded/Sand.jpg'
-									    imageClass='img-fluid item-img'
-									    linkUrl='detail'
-									    offerText='65% off | Use Coupon OSAHAN50'
-										time='15–25 min'
-										price='$100 FOR TWO'
-										showPromoted={true}
-										promotedVariant='dark'
-										favIcoIconColor='text-danger'
-										rating='3.1 (300+)'
-								   	/>
-			                     </div>
-			                     <div className="item">
-			                        <CardItem 
-								   		title='The osahan Restaurant'
-										subTitle='North Indian • American • Pure veg'
-									  	imageAlt='Product'
-									    image='img/uploaded/pizza.jpg'
-									    imageClass='img-fluid item-img'
-									    linkUrl='detail'
-									    offerText='65% off | Use Coupon OSAHAN50'
-										time='20–25 min'
-										price='$500 FOR TWO'
-										showPromoted={true}
-										promotedVariant='danger'
-										favIcoIconColor='text-dark'
-										rating='3.1 (300+)'
-								   	/>
-			                     </div>
-			                     <div className="item">
-			                        <CardItem 
-								   		title='Polo Lounge'
-										subTitle='North Indian • American • Pure veg'
-									  	imageAlt='Product'
-									    image='img/uploaded/Indian.jpg'
-									    imageClass='img-fluid item-img'
-									    linkUrl='detail'
-									    offerText='65% off | Use Coupon OSAHAN50'
-										time='20–25 min'
-										price='$250 FOR TWO'
-										showPromoted={true}
-										promotedVariant='dark'
-										favIcoIconColor='text-danger'
-										rating='3.1 (300+)'
-								   	/>
-			                     </div>
-			                  </OwlCarousel>
-			               </Col>
-			            </Row>
-			         </Container>
-			    </section>
+			   
 			    <section className="section pt-5 pb-5 bg-white becomemember-section border-bottom">
 			         <Container>
 			         	<SectionHeading 
@@ -159,33 +122,7 @@ class Index extends React.Component {
     		</>
     	);
     }
-}
-
-
-const options={
-	responsive: {
-        0:{
-            items:1,
-        },
-        600:{
-            items:2,
-        },
-        1000: {
-          items: 4,
-        },
-        1200: {
-          items: 4,
-        },
-      },
-
-        lazyLoad: true,
-        pagination: false.toString(),
-        loop: true,
-        dots: false,
-        autoPlay: 2000,
-        nav: true,
-        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
-}
+ 
 
 
 

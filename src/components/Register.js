@@ -8,17 +8,18 @@ class Register extends React.Component {
     	return (
     	  <Container fluid className='bg-white'>
 	         <Row>
-	            <Col md={12} lg={12}>
-	               <div className="login d-flex align-items-center py-5">
+			 <Col md={4} lg={6} className="d-none d-md-flex bg-image"></Col>
+	            <Col md={8} lg={6}>
+			     <div className="login d-flex align-items-center py-5">
 	                  <Container>
 	                     <Row>
 	                        <Col md={9} lg={8} className="mx-auto pl-5 pr-5">
-							<Image src="/img/general/foodhub.png" height='300' alt='' />
-	                         <h3 className="login-heading mb-4">New Buddy!</h3>
+							   <h3 className="login-heading mb-4">Welcome New User !</h3>
+							   <p className="text-muted text-normal">Enjoy Best Offers From FoodHub  </p>
 	                           <Form>
 	                              <div className="form-label-group">
 	                                 <Form.Control type="email" id="inputEmail" placeholder="Email address" />
-	                                 <Form.Label htmlFor="inputEmail">Email address / Mobile</Form.Label>
+	                                 <Form.Label htmlFor="inputEmail">Email address</Form.Label>
 	                              </div>
 	                              <div className="form-label-group">
 	                                 <Form.Control type="password" id="inputPassword" placeholder="Password" />

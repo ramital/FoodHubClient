@@ -7,31 +7,12 @@ import Icofont from 'react-icofont';
 class CardItem extends React.Component {
 	render() {
     	return (
-    		<div className="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+    		<div className="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm ">
                <div className="list-card-image">
-               	  {this.props.rating ? (
-	                  <div className="star position-absolute">
-                  		<Badge variant="success">
-	                  		<Icofont icon='star'/> {this.props.rating}
-	                  	</Badge>
-	              	  </div>
-	              	  )
-	              	  :""
-	              }
-                  <div className={`favourite-heart position-absolute ${this.props.favIcoIconColor}`}>
-                  	<Link to={this.props.linkUrl}>
-                  		<Icofont icon='heart'/>
-                  	</Link>
-                  </div>
-                  {this.props.showPromoted ? (
-	                  <div className="member-plan position-absolute">
-	                  	<Badge variant={this.props.promotedVariant}>Promoted</Badge>
-	                  </div>
-	                  )
-                  	  :""
-                  }
+               
+                 
                   <Link to={this.props.linkUrl}>
-                  	<Image src={this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
+                  	<Image src={'img/uploaded/'+this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
                   </Link>
                </div>
                <div className="p-3 position-relative">
@@ -51,22 +32,12 @@ class CardItem extends React.Component {
 		                     	)
 		                     	:""
 		                    }
-							{this.props.price ? (
-	                     		<span className="float-right text-black-50"> {this.props.price}</span>
-	                     		)
-	                     		:""
-	                     	}
+						 
 	                     </p>
 	                   	):''
 	                 }
                   </div>
-                  {this.props.offerText ? (
-	                  <div className="list-card-badge">
-	                     <Badge variant={this.props.offerColor}>OFFER</Badge> <small>{this.props.offerText}</small>
-	                  </div>
-	                  )
-	                  :""
-	              }
+              
                </div>
             </div>
 		);
