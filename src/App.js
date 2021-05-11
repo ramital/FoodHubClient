@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -20,11 +20,11 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'react-select2-wrapper/css/select2.css';
 import './App.css';
 import {APIConfig} from './store/APIConfig';
-import JwtUtil from './store/JwtUtil'
 import Logout from './components/Logout';
 
 const APIs = {
-    Authentication: 'http://localhost:8080/authentication'
+    Authentication: 'http://localhost:8080/authentication',
+    User: 'http://localhost:8080/api/users'
 }
 
 const App = (props) => {

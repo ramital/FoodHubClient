@@ -1,12 +1,8 @@
 import React from 'react';
 import {Switch,Route} from 'react-router-dom';
-import {NavLink,Link } from 'react-router-dom';
+import {NavLink } from 'react-router-dom';
 import {Row,Col,Container,Image} from 'react-bootstrap';
-import Offers from './myaccount/Offers';
 import Orders from './myaccount/Orders';
-import Favourites from './myaccount/Favourites';
-import Payments from './myaccount/Payments';
-import Addresses from './myaccount/Addresses';
 import Profile from './myaccount/Profile';
 import EditProfileModal from './modals/EditProfileModal';
 
