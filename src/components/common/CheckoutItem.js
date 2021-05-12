@@ -40,16 +40,18 @@ class CheckoutItem extends Component {
 
     return (
     	<div className="gold-members p-2 border-bottom">
-           <p className="text-gray mb-0 float-right ml-2">{this.props.priceUnit}{this.props.price * this.state.quantity}</p>
-           <span className="count-number float-right">
+           {/* <span className="count-number float-right">
                <Button variant="outline-secondary" onClick={this.DecreaseItem} className="btn-sm left dec"> <Icofont icon="minus" /> </Button>
                <input className="count-number-input" type="text" value={this.state.quantity} readOnly/>
                <Button variant="outline-secondary" onClick={this.IncrementItem} className="btn-sm right inc"> <Icofont icon="icofont-plus" /> </Button>
-           </span>
+           </span> */}
+
+           <p className="text-danger mb-0 float-right ml-2 mr-2">{this.props.priceUnit}{(this.props.price * this.props.qty).toFixed(2)}</p>
+        
            <div className="media">
               <div className="mr-2"><Icofont icon="ui-press" className="text-danger food-item" /></div>
               <div className="media-body">
-                 <p className="mt-1 mb-0 text-black">{this.props.itemName}</p>
+                 <p className="mt-1 mb-0 text-black">{this.props.itemName} <span className="ml-1 mb-1   badge badge-success "> x  { this.props.qty }</span></p>
               </div>
            </div>
         </div>

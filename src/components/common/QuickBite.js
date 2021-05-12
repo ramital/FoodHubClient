@@ -7,13 +7,15 @@ class QuickBite extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: this.props.qty || 0,
+
+      quantity: this.props.qty   || 0,
       show: this.props.show || true,
       max:this.props.maxValue || 5,
       min:this.props.minValue || 0
     };
   }
-
+  //getgty=()=> {JSON.parse(localStorage.getItem("cartItems")).findIndex((obj => obj.idx == this.props.id)).qty};
+ 
   IncrementItem = () => {
     if(this.state.quantity >= this.state.max) {
 
@@ -22,6 +24,7 @@ class QuickBite extends React.Component {
             quantity: this.state.quantity + 1 
         });
       this.props.getValue({id:this.props.id,quantity: (this.state.quantity + 1 )});
+     
     }
   }
   DecreaseItem = () => {
@@ -36,7 +39,8 @@ class QuickBite extends React.Component {
   render() {
       return (
       	<div className={"p-3 border-bottom "+this.props.itemClass}>
-		   {this.state.quantity===0?
+		  { !this.props.disabled?
+       this.state.quantity===0?
 	            <span className="float-right"> 
 	              <Button variant='outline-secondary' onClick={this.IncrementItem} size="sm">ADD</Button>
 	            </span>
@@ -46,7 +50,7 @@ class QuickBite extends React.Component {
 	               <input className="count-number-input" type="text" value={this.state.quantity} readOnly/>
 	               <Button variant="outline-secondary" onClick={this.IncrementItem} className="btn-sm right inc"> <Icofont icon="icofont-plus" /> </Button>
 	            </span>
-	         }
+	          :null}
 		   <Media>
 		      {this.props.image?
 		      	<Image className={"mr-3 rounded-pill " +this.props.imageClass} src={this.props.image} alt={this.props.imageAlt} />
@@ -79,7 +83,8 @@ QuickBite.propTypes = {
   qty: PropTypes.number,
   minValue: PropTypes.number,
   maxValue: PropTypes.number,
-  getValue: PropTypes.func.isRequired
+  getValue: PropTypes.func.isRequired,
+  disabled: PropTypes.bool
 };
 QuickBite.defaultProps = {
   itemClass:'gold-members',
@@ -90,6 +95,7 @@ QuickBite.defaultProps = {
   priceUnit:'$',
   showPromoted: false,
   badgeVariant: 'danger'
+  ,disabled:false
 }
 
 export default QuickBite;

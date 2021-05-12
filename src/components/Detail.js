@@ -12,80 +12,196 @@ import Review from './common/Review';
 import Icofont from 'react-icofont';
 import { matchPath } from 'react-router'
 import { APIConfig } from '../store/APIConfig';
+import  cartItems  from '../store/cartItems';
+ 
 import axios from 'axios';
 
 	const Detail  = (props) => {
 
 			
 		const APIs = useContext(APIConfig);
-		const link = APIs.restaurant;
-	 const [restaurant, setrestaurant] = useState({});
-	 
-		useEffect(fetchRestaurantHandler, []);  
-   
+		const Restlink = APIs.restaurant;
+		const Itemslink = APIs.restaurantItem;
+
+		const [restaurant, setrestaurant] = useState({});
+		 const [items, setitems] = useState([]);
+
+	 	 const [groupedItem, setgroupedItem] = useState({});
+		 const [selecteditems, setselecteditems] = useState([]);
+	 	 
+		 const [selectedrestaurant, setselectedrestaurant] = useState({});
+	 	 
+		const match = matchPath(props.history.location.pathname, {
+			path: '/Detail/:id',
+			exact: true,
+			strict: false
+		})
+
+		useEffect(fetchRestaurantHandler, [props]);  
+    
 		function fetchRestaurantHandler() {
+		
+			if(localStorage.getItem("cartItems")!=null)
+			{
+			  setselecteditems(JSON.parse(localStorage.getItem("cartItems")));
+			}
+			if(localStorage.getItem("cartrestaurant")!=null)
+			{
+				setselectedrestaurant(JSON.parse(localStorage.getItem("cartrestaurant")) );
+			}
+
 			const headers = {
 				'Access-Control-Allow-Origin': '*', 
 			} 
-			//console.log(link+match.params.id);
-			   axios(link+match.params.id, { headers })
+			  axios(Restlink+match.params.id, { headers })
 				.then(response => {
-				//	 console.log(response.data.restaurant);
-					setrestaurant(response.data.restaurant);
-					 // console.log(response.data.restaurant);
-					
+				 	setrestaurant(response.data.restaurant);
+				 })
+				.catch(error => {    
 				})
-				.catch(error => {
-				   
+
+				axios(Itemslink+match.params.id, { headers })
+				.then(response => {
+				  
+					 let group = response.data.restaurantItems.reduce((r, a) => {
+					 	r[a.categoryName] = [...r[a.categoryName] || [], a];
+						return r;
+					   }, {});
+					   setgroupedItem(group);
+					      
+					})
+				.catch(error => {    
 				})
+ 
+		}
+ 
+
+		  function fetchPostsHandler() {
+			  
+			const headers = {
+				'Access-Control-Allow-Origin': '*', 
+			} 
+				axios(Itemslink+match.params.id, { headers })
+			.then(response => {
+				if(localStorage.getItem("cartItems")!=null)
+			   {
+			 	let slt=JSON.parse(localStorage.getItem("cartItems"));
+				if(slt!=null)
+				{
+				let newList =[];
+				slt.map(element => { 
+				newList.push( response.data.restaurantItems.find((item) => item.id === element.idx));
+			 
+				});
+				setitems(newList);
+				 
+			  }
+			 }
+		  });
 		 
 		}
-	
-		  const  state = {
-      	  showAddressModal: false,
-      	  users:[
-      	  	{
-      	  		name:'Osahan Singh',
-      	  		image:'/img/user/5.png',
-      	  		url:'#'
-      	  	},
-      	  	{
-      	  		name:'Gurdeep Osahan',
-      	  		image:'/img/user/2.png',
-      	  		url:'#'
-      	  	},
-      	  	{
-      	  		name:'Askbootstrap',
-      	  		image:'/img/user/3.png',
-      	  		url:'#'
-      	  	},
-      	  	{
-      	  		name:'Osahan Singh',
-      	  		image:'/img/user/4.png',
-      	  		url:'#'
-      	  	}
-      	  ]
-	    };
- 
-		
-const match = matchPath(props.history.location.pathname, {
-	path: '/Detail/:id',
-	exact: true,
-	strict: false
-  })
+		 
+		 useEffect(fetchPostsHandler, [props]); 
 
- const   hideAddressModal = () => this.setState({ showAddressModal: false });
+	
+		 
  const  getQty = ({id,quantity}) => {
-    	//console.log(id);
-    	//console.log(quantity);
-	}
+     
+		let idx = selecteditems.findIndex((obj => obj.idx == id));
+		if(idx>-1)
+		{ 
+			selecteditems[idx].qty=quantity;
+			 if(quantity>0)
+			{selecteditems[idx].qty=quantity;}
+			else
+			{selecteditems.splice(idx, 1)}
+		}else
+		{
+			selecteditems.push( {
+				idx: id,
+				qty: quantity
+			}); 
+		}
+		if(selecteditems.length>0  )
+		{
+			 localStorage.setItem("cartrestaurant", JSON.stringify(
+				{
+					restid: match.params.id,
+					name: restaurant.name,
+					address:restaurant.address,
+				}
+				));
+			 
+		}else
+		{
+			localStorage.removeItem("cartrestaurant");
+		}
+		
+		props.history.push(props.match.url+'/'+match.params.id);
+		
+		localStorage.setItem("cartItems", JSON.stringify(selecteditems));
+		 
+ }
+ 
+
+	
+	const checkout =  ()=> { 
+		
+				return <div className="bg-white rounded shadow-sm mb-2">
+				{ 
+			  items.map(item => {
+						   
+			   return  <CheckoutItem 
+					 itemName={item.name}
+				 price={item.price}
+				 priceUnit="$"
+				 id={item.id}
+				 qty={selecteditems?(selecteditems.find(o => o.idx === item.id)? selecteditems.find(o => o.idx === item.id).qty:0):0}
+				 show={true}
+				 minValue={0}
+				 maxValue={7}
+				 getValue={getQty}
+				 />
+			 }) }
+		 
+				 <div className="mb-2 bg-white rounded p-2 clearfix">
+				 <Image fluid className="float-left" src="/img/wallet-icon.png" />
+				 <h6 className="font-weight-bold text-right mb-2">Subtotal : <span className="text-danger">$  {items.reduce((n, {price}, index ) => n + price *(selecteditems[index]?selecteditems[index].qty:0), 0).toFixed(2)}</span></h6>
+			  
+			 </div>
+			 </div>  
+			}
+		
 	const	getStarValue = ({value}) => {
     	console.log(value);
-    	//console.log(quantity);
+     
 	}
+	const menu= 	Object.keys(groupedItem).map(key => {
+	  
+	return  <Col md={12}>
+				<h5 className="mb-4 mt-3 col-md-12">{key}
+	 <small className="h6 text-black-50"> {groupedItem[key].length} Item(s)</small>
+	  </h5>
+	  <div className="bg-white rounded border shadow-sm mb-4">
+ 
+	  { groupedItem[key].map(post => {
+			return   <QuickBite 
+					id={post.id} 
+				    title={post.name}
+					price={post.price}
+					priceUnit='$'
+					getValue= { getQty }
+					qty={selecteditems?(selecteditems.find(o => o.idx === post.id)?selecteditems.find(o => o.idx === post.id).qty:0):0}
+					badgeVariant= {post.typeName}  
+					disabled= { items.filter(s=>s===undefined).length>0 ?true:false}//in case the selected items don't match with the current page restaurant menu disable +- button
+			   />
+	 	})}
 
-
-
+	 </div>
+	 </Col>
+		
+	}); 
+	 
 	 
     	return (
 		<>
@@ -130,10 +246,10 @@ const match = matchPath(props.history.location.pathname, {
 		               
 		                    }
 		                     {restaurant.hasChicken &&
-							    <Button variant='light' size='sm' className="border-light-btn mr-1" type="button"><i className="icofont-chicken text-danger"  />  Chicken Menu </Button>
+							    <Button variant='light' size='sm' className="border-light-btn mr-1" type="button"><i className="icofont-chicken text-warning"  />  Chicken Menu </Button>
 		                    }
  							 {restaurant.hasMeat &&
-							    <Button variant='light' size='sm' className="border-light-btn mr-1" type="button"><i className="icofont-cow-head text-warning"   />  Meat Menu </Button>
+							    <Button variant='light' size='sm' className="border-light-btn mr-1" type="button"><i className="icofont-cow-head text-danger"   />  Meat Menu </Button>
 		                    }
  							{restaurant.hasfish &&
 							    <Button variant='light' size='sm' className="border-light-btn mr-1" type="button"><i   className='icofont-fish text-info' />  Chicken Menu </Button>
@@ -143,15 +259,11 @@ const match = matchPath(props.history.location.pathname, {
 		                     <Nav.Item>
 		                        <Nav.Link eventKey="first">Order Online</Nav.Link>
 		                     </Nav.Item>
+		                  
 		                     <Nav.Item>
-		                        <Nav.Link eventKey="second">Gallery</Nav.Link>
-		                     </Nav.Item>
-		                     <Nav.Item>
-		                        <Nav.Link eventKey="third">Restaurant Info</Nav.Link>
+		                        <Nav.Link eventKey="second">Restaurant Info</Nav.Link>
 		                     </Nav.Item> 
-		                     <Nav.Item>
-		                        <Nav.Link eventKey="fifth">Ratings & Reviews</Nav.Link>
-		                     </Nav.Item>
+		                   
 		                  </Nav>
 		               </Col>
 		            </Row>
@@ -177,47 +289,13 @@ const match = matchPath(props.history.location.pathname, {
 		                              </Form>
 		                            
 			                          <Row>
-			                              <h5 className="mb-4 mt-3 col-md-12">Quick Bites <small className="h6 text-black-50">3 ITEMS</small></h5>
-			                              <Col md={12}>
-			                                 <div className="bg-white rounded border shadow-sm mb-4">
-				                                <QuickBite 
-													id={1}
-											   		title='Chicken Tikka Sub'
-													price={250}
-													priceUnit='$'
-													getValue={getQty}
-											   	/>
-				                                <QuickBite 
-													id={2}
-											   		title='Cheese corn Roll'
-													price={600}
-													showBadge={true}
-													badgeText='BEST SELLER'
-													qty={1}
-													priceUnit='$'
-													getValue={getQty}
-											   	/>
-				                                <QuickBite 
-													id={3}
-											   		title='Chicken Tikka Sub'
-													price={250}
-													showBadge={true}
-													badgeText='Pure Veg'
-													badgeVariant="success"
-													qty={2}
-													priceUnit='$'
-													getValue={getQty}
-											   	/>
-			                                 </div>
-			                              </Col>
+			                           
+
+										  {menu}
 			                           </Row>
 			                        	</Tab.Pane>
-										<Tab.Pane eventKey="second">
-						            	<div className='position-relative'>
-						            		<GalleryCarousel />
-						            	</div>
-						          	</Tab.Pane>
-						            <Tab.Pane eventKey="third">
+									 
+						            <Tab.Pane eventKey="second">
 						            	<div id="restaurant-info" className="bg-white rounded shadow-sm p-4 mb-4">
 			                              <div className="address-map float-right ml-5">
 			                                 <div className="mapouter">
@@ -226,166 +304,48 @@ const match = matchPath(props.history.location.pathname, {
 			                                 </div>
 			                              </div>
 			                              <h5 className="mb-4">Restaurant Info</h5>
-			                              <p className="mb-3">Jagjit Nagar, Near Railway Crossing, 
-			                                 <br /> Near Model Town, Ludhiana, PUNJAB
+			                              <p className="mb-3"> {restaurant.smallDescription}
 			                              </p>
-			                              <p className="mb-2 text-black"><Icofont icon="phone-circle text-primary mr-2" /> +91 01234-56789, +91 01234-56789</p>
-			                              <p className="mb-2 text-black"><Icofont icon="email text-primary mr-2" /> iamosahan@gmail.com, osahaneat@gmail.com</p>
-			                              <p className="mb-2 text-black"><Icofont icon="clock-time text-primary mr-2" /> Today  11am – 5pm, 6pm – 11pm
+			                              <p className="mb-2 text-black"><Icofont icon="phone-circle text-primary mr-2" />{restaurant.contact}</p>
+			                              <p className="mb-2 text-black"><Icofont icon="clock-time text-primary mr-2" /> Delivery Time    {restaurant.deliveredTime}
 			                                 <Badge variant="success" className='ml-1'> OPEN NOW </Badge>
 			                              </p>
-			                              <hr className="clearfix" />
-			                              <p className="text-black mb-0">You can also check the 3D view by using our menue map clicking here &nbsp;&nbsp;&nbsp; <Link className="text-info font-weight-bold" to="#">Venue Map</Link></p>
+			                           
 			                              <hr className="clearfix" />
 			                              <h5 className="mt-4 mb-4">More Info</h5>
-			                              <p className="mb-3">Dal Makhani, Panneer Butter Masala, Kadhai Paneer, Raita, Veg Thali, Laccha Paratha, Butter Naan</p>
-			                              <div className="border-btn-main mb-4">
-			                                 <Link className="border-btn text-success mr-2" to="#"><Icofont icon="check-circled" /> Breakfast</Link>
-			                                 <Link className="border-btn text-danger mr-2" to="#"><Icofont icon="close-circled" /> No Alcohol Available</Link>
-			                                 <Link className="border-btn text-success mr-2" to="#"><Icofont icon="check-circled" /> Vegetarian Only</Link>
-			                                 <Link className="border-btn text-success mr-2" to="#"><Icofont icon="check-circled" /> Indoor Seating</Link>
-			                                 <Link className="border-btn text-success mr-2" to="#"><Icofont icon="check-circled" /> Breakfast</Link>
-			                                 <Link className="border-btn text-danger mr-2" to="#"><Icofont icon="close-circled" /> No Alcohol Available</Link>
-			                                 <Link className="border-btn text-success mr-2" to="#"><Icofont icon="check-circled" /> Vegetarian Only</Link>
-			                              </div>
+			                              <p className="mb-3"> {restaurant.description}</p>
+			                              
 			                           </div>
 						          	</Tab.Pane>
-						             <Tab.Pane eventKey="fifth">
-							            <div id="ratings-and-reviews" className="bg-white rounded shadow-sm p-4 mb-4 clearfix restaurant-detailed-star-rating">
-			                              <div className="star-rating float-right">
-			                              	<StarRating fontSize={26} star={5} getValue={getStarValue}/>
-			                              </div>
-			                              <h5 className="mb-0 pt-1">Rate this Place</h5>
-			                            </div>
-			                            <div className="bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating">
-			                              <h5 className="mb-0 mb-4">Ratings and Reviews</h5>
-			                              <div className="graph-star-rating-header">
-			                                 <div className="star-rating">
-			                              		<StarRating fontSize={18} disabled={true} star={5} getValue={getStarValue}/>  
-			                              		<b className="text-black ml-2">334</b>
-			                                 </div>
-			                                 <p className="text-black mb-4 mt-2">Rated 3.5 out of 5</p>
-			                              </div>
-			                              <div className="graph-star-rating-body">
-		                                    <RatingBar leftText="5 Star" barValue={56} />
-		                                    <RatingBar leftText="4 Star" barValue={23} />
-		                                    <RatingBar leftText="3 Star" barValue={11} />
-		                                    <RatingBar leftText="2 Star" barValue={6} />
-		                                    <RatingBar leftText="1 Star" barValue={4} />
-			                              </div>
-			                              <div className="graph-star-rating-footer text-center mt-3 mb-3">
-			                                 <Button type="button" variant="outline-primary" size="sm">Rate and Review</Button>
-			                              </div>
-			                            </div>
-			                            <div className="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
-			                              <Link to="#" className="btn btn-outline-primary btn-sm float-right">Top Rated</Link>
-			                              <h5 className="mb-1">All Ratings and Reviews</h5>
-			                              <Review
-			                              	image="/img/user/1.png"
-											ImageAlt=""
-											ratingStars={5}
-											Name='Singh Osahan'
-											profileLink="#"
-											reviewDate= "Tue, 20 Mar 2020"
-											reviewText= "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classNameical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classNameical literature, discovered the undoubtable source. Lorem Ipsum comes from sections"
-											likes= "856M"
-											dislikes= "158K"
-											otherUsers={state.users}
-			                               />
-			                              <hr />
-			                              <Review
-			                              	image="/img/user/6.png"
-											ImageAlt=""
-											ratingStars={5}
-											Name='Gurdeep Osahan'
-											profileLink="#"
-											reviewDate= "Tue, 20 Mar 2020"
-											reviewText= "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-											likes= "88K"
-											dislikes= "1K"
-											otherUsers={state.users}
-			                               />
-			                              <hr />
-                              			  <Link className="text-center w-100 d-block mt-4 font-weight-bold" to="#">See All Reviews</Link>
-			                            </div>
-						            	<div className="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
-			                              <h5 className="mb-4">Leave Comment</h5>
-			                              <p className="mb-2">Rate the Place</p>
-			                              <div className="mb-4">
-			                                 <div className="star-rating">
-			                              		<StarRating fontSize={26} star={5} getValue={getStarValue}/>
-			                                 </div>
-			                              </div>
-			                              <Form>
-			                                 <Form.Group>
-			                                    <Form.Label>Your Comment</Form.Label>
-			                                    <Form.Control as="textarea" />
-			                                 </Form.Group>
-			                                 <Form.Group>
-			                                    <Button variant="primary" size="sm" type="button"> Submit Comment </Button>
-			                                 </Form.Group>
-			                              </Form>
-			                           </div>
-						          	</Tab.Pane>
-						         </Tab.Content>
+						              </Tab.Content>
 						    </div>
 						</Col>
 		               <Col md={4}>
-		           
+						   
+						{items.filter(s=>s===undefined).length>0 ?//in case the selected items don't match with the current page restaurant menu show this message
+						<div class="alert alert-danger" role="alert">
+						<Image fluid className="img-fluid center" src="/img/general/FoodHubsmall.png" />	<br/> 	<br/> You are only allowed to  Checkout from one restaurant only! 
+				  		<Link to={"/detail/"+selectedrestaurant.restid} className="btn btn-danger btn-block btn-lg mt-2">Go to my Order</Link>
+   							 
+		 				</div>:
 		               	<div className="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
 	                     
                            <h5 className="mb-1 text-white">Your Order
                            </h5>
-                           <p className="mb-4 text-white">6 Items</p>
-	                     <div className="bg-white rounded shadow-sm mb-2">
-	                     	<CheckoutItem 
-	                     		itemName="Chicken Tikka Sub"
-								price={314}
-								priceUnit="$"
-								id={1}
-								qty={2}
-								show={true}
-								minValue={0}
-								maxValue={7}
-								getValue={getQty}
-	                     	 />
-	                     	<CheckoutItem 
-	                     		itemName="Cheese corn Roll"
-								price={260}
-								priceUnit="$"
-								id={2}
-								qty={1}
-								show={true}
-								minValue={0}
-								maxValue={7}
-								getValue={getQty}
-	                     	 />
-	                     	<CheckoutItem 
-	                     		itemName="Mixed Veg"
-								price={122}
-								priceUnit="$"
-								id={3}
-								qty={1}
-								show={true}
-								minValue={0}
-								maxValue={7}
-								getValue={getQty}
-	                     	 />
+                           <p className="mb-4 text-white">{  selecteditems.reduce((n, {qty} ) => n  + qty,0)} Items</p>
+			 
+			  				{items.filter(s=>s!==undefined).length>0 && selecteditems.length>0  && checkout()}
 	                     	 
 		                     
-	              		 </div>
-	                     <div className="mb-2 bg-white rounded p-2 clearfix">
-	                        <Image fluid className="float-left" src="/img/wallet-icon.png" />
-	                        <h6 className="font-weight-bold text-right mb-2">Subtotal : <span className="text-danger">$456.4</span></h6>
-	                        <p className="seven-color mb-1 text-right">Extra charges may apply</p>
-	                        <p className="text-black mb-0 text-right">You have saved $955 on the bill</p>
-	                     </div>
-                     	 <Link to="/thanks" className="btn btn-success btn-block btn-lg">Checkout
-                     	 <Icofont icon="long-arrow-right" /></Link>
+	              		 
+	               
+                     	 <Link to="/checkout" className="btn btn-success btn-block btn-lg">Checkout
+                     	 <Icofont icon="long-arrow-right" />
+						  </Link>
 					      <div className="pt-2"></div>
 		                
 		   				 
-		   				</div>
+		   				</div>}
 		               </Col>
 					</Row>
 				</Container>

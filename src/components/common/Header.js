@@ -1,21 +1,29 @@
 import React from 'react';
-import {NavLink,Link} from 'react-router-dom';
+import {NavLink,Link, useHistory, Redirect} from 'react-router-dom';
 import {Navbar,Nav,Container,NavDropdown,Image,Badge} from 'react-bootstrap';
 import DropDownTitle from '../common/DropDownTitle';
 import CartDropdownHeader from '../cart/CartDropdownHeader';
-import CartDropdownItem from '../cart/CartDropdownItem';
 import Icofont from 'react-icofont';
+ import JwtUtil from '../../store/JwtUtil';
+ import jwt_decode from 'jwt-decode';
+import Cart from './Cart';
 
 class Header extends React.Component {
+
+  
 	constructor(props) {
 	    super(props);
 	    this.state = {
-	      isNavExpanded: false
+	      isNavExpanded: false,
+		  username: null
 	    };
+		
 	}
+
     setIsNavExpanded = (isNavExpanded) => {
       this.setState({ isNavExpanded: isNavExpanded });
     }
+
     closeMenu = () => {
       this.setState({ isNavExpanded: false });
     }
@@ -29,14 +37,30 @@ class Header extends React.Component {
       }
     }
   
-	componentDidMount() {
-	    document.addEventListener('click', this.handleClick, false);      
+	componentDidMount() {				
+	    document.addEventListener('click', this.handleClick, false);
+
+		const token = JwtUtil.getToken();
+		if (token){
+			const decoded = jwt_decode(token);
+			this.setState({ username: decoded.sub });
+		}
+		else {
+			this.setState({ username: null });
+		}
+	}
+
+	handleLogout(){
+		JwtUtil.clearToken();
+		this.setState({ username: null });
 	}
 
 	componentWillUnmount() {
 	    document.removeEventListener('click', this.handleClick, false);
 	}
+
 	render() {
+
     	return (
     		<div ref={node => this.node = node}>
 			<Navbar onToggle={this.setIsNavExpanded}
@@ -59,23 +83,26 @@ class Header extends React.Component {
              				<Icofont icon='sale-discount'/> Offers  
 			            </Nav.Link>
 			            
-			            <NavDropdown alignRight
+
+						{this.state.username?										            
+							<React.Fragment>
+							<NavDropdown alignRight
 			            	title={
 			            		<DropDownTitle 
 			            			className='d-inline-block' 
 			            			image="img/general/usr.png"
 			            			imageAlt='user'
 			            			imageClass="nav-osahan-pic rounded-pill"
-			            			title='My Account'
+			            			title={this.state.username}
 			            		/>
 			            	}
 			            >
 					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/profile"><Icofont icon='icofont-user'/> Profile</NavDropdown.Item>
 				 		 
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
-							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/login"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => this.handleLogout()} to="/logout"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
 				 		  </NavDropdown>
-
+ 
 
 						   <NavDropdown alignRight
 			            	title={
@@ -93,62 +120,21 @@ class Header extends React.Component {
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
 						 
 						 	  </NavDropdown>
-			            <NavDropdown activeclassname="active" alignRight className="dropdown-cart" 
-			            	title={
-			            		<DropDownTitle 
-			            			className='d-inline-block' 
-			            			faIcon='shopping-basket'
-			            			iconClass='mr-1'
-			            			title='Cart'
-			            			badgeClass='ml-1'
-			            			badgeVariant='success'
-			            			badgeValue={5}
-			            		/>
-			            	}
-			            >
+			           
 
-			                <div className="dropdown-cart-top shadow-sm">
-			               	
-			                  <div className="dropdown-cart-top-body border-top p-4">
-			                     <CartDropdownItem 
-			                     	icoIcon='ui-press'
-			                     	iconClass='text-success food-item'
-			                     	title='Corn & Peas Salad x 1'
-			                     	price='$209'
-			                     />
+			            <Cart/>
+			            
+							</React.Fragment>:
+						
 
-			                     <CartDropdownItem 
-			                     	icoIcon='ui-press'
-			                     	iconClass='text-success food-item'
-			                     	title='Veg Seekh Sub 6" (15 cm) x 1'
-			                     	price='$133'
-			                     />
+					
+							<Nav.Link eventKey={1} as={NavLink} activeclassname="active" to="/login">
+							<Icofont icon='login'/> Login
+							</Nav.Link>
+						
+					}
 
-			                     <CartDropdownItem 
-			                     	icoIcon='ui-press'
-			                     	iconClass='text-danger food-item'
-			                     	title='Chicken Tikka Sub 12" (30 cm) x 1'
-			                     	price='$314'
-			                     />
-
-			                     <CartDropdownItem 
-			                     	icoIcon='ui-press'
-			                     	iconClass='text-success food-item'
-			                     	title='Corn & Peas Salad x 1 '
-			                     	price='$209'
-			                     />
-			                  </div>
-			                  <div className="dropdown-cart-top-footer border-top p-4">
-			                     <p className="mb-0 font-weight-bold text-secondary">Sub Total <span className="float-right text-dark">$499</span></p>
-			                     <small className="text-info">Extra charges may apply</small>  
-			                  </div>
-			                  <div className="dropdown-cart-top-footer border-top p-2">
-			                    <Link to="/thanks" className="btn btn-success btn-block btn-lg">Checkout</Link>
-                     	
-							  </div>
-			                </div>
-			            </NavDropdown>
-			         </Nav>
+					 </Nav>
 			      </Navbar.Collapse>
 			   </Container>
 			</Navbar>

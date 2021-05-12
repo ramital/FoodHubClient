@@ -14,7 +14,7 @@ class ProductBox extends React.Component {
                :""
              }
              {this.props.counting?
-              <p>{this.props.counting}</p>
+              <p> </p>
                :""
              }
            </Link>
