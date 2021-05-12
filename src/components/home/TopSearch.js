@@ -19,27 +19,14 @@ class TopSearch extends React.Component {
 	               <Col md={8}>
 	                  <div className="homepage-search-title">
 	                     <h1 className="mb-2 font-weight-normal"><span className="font-weight-bold">Find Awesome Deals</span> in Food HUB</h1>
-	                     <h5 className="mb-5 text-secondary font-weight-normal">Lists of top restaurants, cafes, pubs, and bars in Melbourne, based on trends</h5>
+	                     <h5 className="mb-4 mt-4 text-secondary font-weight-normal">Lists of top restaurants, cafes, pubs, and bars in Melbourne, based on trends</h5>
 	                  </div>
-	                  <div className="homepage-search-form">
-	                     <Form className="form-noborder">
-	                        <div className="form-row">
-	                       
-	                           <Form.Group className='col-lg-10 col-md-10 col-sm-12'>
-	                              <Form.Control type="text" placeholder="Search here..." size='lg' />
-	                              
-	                           </Form.Group>
-	                           <Form.Group className='col-lg-2 col-md-2 col-sm-12'>
-	                              <Link to="listing" className="btn btn-primary btn-block btn-lg btn-gradient">Search</Link>
-	                           </Form.Group>
-	                        </div>
-	                     </Form>
-	                  </div>
-	                  <h6 className="mt-4 text-shadow font-weight-normal">E.g. Beverages, Pizzas, Chinese, Bakery, Indian...</h6>
+	                 
+	                  <h6 className="mb-4 mt-4 text-secondary font-weight-normal">E.g. Beverages, Pizzas, Chinese, Bakery, Indian...</h6>
 	                  <CategoriesCarousel />
 	               </Col>
 	               <Col md={4}>
-	                  <div className="osahan-slider pl-4 pt-3">
+	                  <div className="osahan-slider   pt-4 pl-4 pt-3">
 	                     <OwlCarousel nav loop {...options2} className="homepage-ad owl-theme">
 	                        <div className="item">
 								<ProductBox 

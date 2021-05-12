@@ -19,10 +19,11 @@ import JwtUtil from '../../store/JwtUtil';
 		
 		function fetchPostsHandler() {
 		 
-		   axios(OrderLink, { headers })
+		   axios(OrderLink+'/pending', { headers })
 				.then(response => {
 					setPosts(response.data.orders);
-					})
+					 
+				})
 				.catch(error => {
 				
 				})
@@ -38,7 +39,7 @@ import JwtUtil from '../../store/JwtUtil';
 		address={post.address}
 		orderProducts={post.itemslist}
 		orderTotal={post.totalPrice} 
-		status={post.statusName}
+	 
 	/>
 
 });
@@ -46,7 +47,7 @@ import JwtUtil from '../../store/JwtUtil';
     	return (
     		<>
     		    <div className='p-4 bg-white shadow-sm'>
-	              <h4 className="font-weight-bold mt-0 mb-4">Past Orders</h4>
+	              <h4 className="font-weight-bold   mt-0 mb-4">Pending </h4>
 			    {ordrs}
 			      
 			    </div>

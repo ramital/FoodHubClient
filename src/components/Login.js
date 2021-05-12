@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import {Link} from 'react-router-dom';
 import {Row,Col,Container,Form,Image,Button} from 'react-bootstrap';
 import axios from 'axios'; 
@@ -14,20 +14,23 @@ const Login = (props) => {
 	const APIs = useContext(APIConfig);
 	const authenticationEndpoint = APIs.Authentication;
 	
+    const [status, setstatus] = useState(''); 
+    
 	function login(){
 		const data = {uid: uidRef.current.value, pwd: pwdRef.current.value};
 		const headers = {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',
         }
-		
-		axios.post(authenticationEndpoint, data, headers)
+		 	axios.post(authenticationEndpoint, data, headers)
 			.then((response) => {
-				JwtUtil.storeToken(response.data.token);
-				props.history.push('/');
+				 
+				 JwtUtil.storeToken(response.data.token);
+				 props.history.push('/');
 			})
 			.catch((error) => {
-				console.error('Error:', error);
+				setstatus("Invalid Credentials!")
+				 
 			});
 	}
 		
@@ -53,13 +56,13 @@ const Login = (props) => {
 									<Form.Control type="password" id="inputPassword" placeholder="Password" ref={pwdRef} />
 									<Form.Label htmlFor="inputPassword">Password</Form.Label>
 								</div>
-								<Form.Check  
-								className='mb-3'
-								custom
-								type="checkbox"
-								id="custom-checkbox"
-								label="Remember password"
-								/>
+
+							 
+								{status &&	<div className="text-center text-danger pt-3 pb-3">
+								<div class="alert alert-danger" role="alert">
+								{status}     </div>	
+								</div>}
+
 								<Link onClick={() => login()} className="btn btn-lg btn-outline-primary btn-block btn-login text-uppercase font-weight-bold mb-2">Sign in</Link>
 								
 								<Link to="/" className="btn btn-lg btn-outline-info btn-block btn-login text-uppercase font-weight-bold mb-2">Skip to Menu</Link>

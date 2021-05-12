@@ -12,7 +12,12 @@ class OrderCard extends React.Component {
 	          <div className="gold-members p-4">
 	                <Media>
 	                   <Media.Body>
-	                   		{this.props.deliveredDate?
+					   {this.props.orderTitle&&
+						   <h5 className="text-danger  mb-1">
+	                      {this.props.orderTitle} 
+	                      </h5>}
+
+						    	{this.props.deliveredDate?
 	                   			(
 			                      <span className="float-right text-info">Delivered on {this.props.deliveredDate}  
 			                      	<Icofont icon="check-circled" className="text-success ml-1" />
@@ -20,10 +25,15 @@ class OrderCard extends React.Component {
 			                    )
 			                    :""
 	                   		}
-	                     
+					       {this.props.status&&
+	                       <h5 className="text-info float-right mb-1">
+	                      {this.props.status} 
+	                      </h5>}
+
 	                      <p className="text-gray mb-1">
 	                      	<Icofont icon="location-arrow" /> {this.props.address} 
 	                      </p>
+						
 	                      <p className="text-gray mb-3">
 	                      	<Icofont icon="list" /> ORDER #{this.props.orderNumber} 
 	                      	<Icofont icon="clock-time" className="ml-2" /> {this.props.orderDate} 
@@ -34,7 +44,7 @@ class OrderCard extends React.Component {
 	                      <hr />
 	                    
 	                      <p className="mb-0 text-black text-primary pt-2">
-	                      	<span className="text-black font-weight-bold"> Total Paid:</span> {this.props.orderTotal}
+	                      	<span className="text-black font-weight-bold"> Total Paid:</span>  ${this.props.orderTotal}
 	                      </p>
 	                   </Media.Body>
 	                </Media>

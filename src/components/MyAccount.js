@@ -1,25 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Switch,Route} from 'react-router-dom';
 import {NavLink } from 'react-router-dom';
 import {Row,Col,Container,Image} from 'react-bootstrap';
 import Orders from './myaccount/Orders';
 import Profile from './myaccount/Profile';
 import EditProfileModal from './modals/EditProfileModal';
+import JwtUtil from '../store/JwtUtil'
+import jwt_decode from 'jwt-decode';
+import Pending from './myaccount/Pending';
 
-class MyAccount extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+ 
 
-    this.state = {
-      showEditProfile: false
-    };
-  }
-  hideEditProfile = () => this.setState({ showEditProfile: false });
+const MyAccount= (props) => {
+  
 
-	render() {
+   const [state, setState] = useState({
+		isNavExpanded: false,
+		username: null
+ }); 
+
+   function componentDidMount() {				
+	 
+      const token = JwtUtil.getToken();
+      if (token){
+         const decoded = jwt_decode(token);
+         setState({ username: decoded.sub });
+      }
+      else {
+         setState({ username: null });
+      }
+   }
+      useEffect(componentDidMount, [props]); 
+	 
     	return (
     		<>
-        <EditProfileModal show={this.state.showEditProfile} onHide={this.hideEditProfile}/>
+        <EditProfileModal //show={this.state.showEditProfile}
+         //onHide={this.hideEditProfile}
+         />
         <section className="section pt-4 pb-4 osahan-account-page">
            <Container>
               <Row>
@@ -30,7 +47,7 @@ class MyAccount extends React.Component {
                              <div className="osahan-user-media">
                                 <Image className="mb-3 rounded-pill shadow-sm mt-1" src="/img/general/usr.png" alt="gurdeep singh osahan" />
                                 <div className="osahan-user-media-body">
-                                   <h6 className="mb-2">Rami Tal</h6>
+                                   <h6 className="mb-2">{state.username}</h6>
                                </div>
                              </div>
                           </div>
@@ -42,6 +59,9 @@ class MyAccount extends React.Component {
                           <li className="nav-item">
                              <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/orders"><i className="icofont-food-cart"></i> Orders</NavLink>
                           </li>  
+                          <li className="nav-item">
+                             <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/Pending"><i className="icofont-food-cart"></i> Pending Orders</NavLink>
+                          </li>  
                          
                        </ul>
                     </div>
@@ -51,7 +71,7 @@ class MyAccount extends React.Component {
                   <Route path="/myaccount/profile" exact component={Profile} />
                     
                      <Route path="/myaccount/orders" exact component={Orders} />
-                    
+                     <Route path="/myaccount/Pending" exact component={Pending} /> 
                    </Switch>
                  </Col>
               </Row>
@@ -60,7 +80,7 @@ class MyAccount extends React.Component {
     		</>
     	);
     }
-}
+ 
 
 
 export default MyAccount;

@@ -37,7 +37,7 @@ class MyRestaurant extends React.Component {
                        </div>
                        <ul className="nav flex-column border-0 pt-4 pl-4 pb-4">
                        <li className="nav-item">
-                             <NavLink className="nav-link" activeClassName="active" exact to="/myrestaurant/profile"><i className="icofont-user"></i> Profile</NavLink>
+                             <NavLink className="nav-link" activeClassName="active" exact to="/myrestaurant/profile"><i className="icofont-restaurant"></i> Profile</NavLink>
                           </li> 
                           <li className="nav-item">
                              <NavLink className="nav-link" activeClassName="active" exact to="/myrestaurant/orders"><i className="icofont-food-cart"></i> Orders</NavLink>

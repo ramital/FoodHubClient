@@ -52,6 +52,7 @@ import { APIConfig } from '../store/APIConfig';
     	   axios(link, { headers })
             .then(response => {
 				 setPosts(response.data.restaurants);
+			 console.log(response.data.restaurants)
             })
             .catch(error => {
                
@@ -67,9 +68,9 @@ import { APIConfig } from '../store/APIConfig';
 					<CardItem 
 				   key={post.id}
 				  title={post.name}
-				  subTitle={post.smallDescription}
+				  subTitle={post.smalldescription}
 				  imageAlt='Product'
-				  image={post.profileImage} 
+				  image={post.profileimage} 
 				  imageClass='img-fluid item-img'
 				  linkUrl={'detail/'+ post.id}
 				  offerText='65% off | Use Coupon OSAHAN50'

@@ -219,7 +219,7 @@ import axios from 'axios';
 	                       <h2 className="text-white">{restaurant.name}</h2>
 	                        <p className="text-white mb-1"><Icofont icon="location-pin" /> {restaurant.address}  
 	                        </p>
-	                        <p className="text-white mb-0"><Icofont icon="food-cart" />  {restaurant.smallDescription}  
+	                        <p className="text-white mb-0"><Icofont icon="food-cart" />  {restaurant.smalldescription}  
 	                        </p>
 	                     </div>
 	                  </Col>
@@ -276,19 +276,7 @@ import axios from 'axios';
 	                  		<div className="offer-dedicated-body-left">
 							    <Tab.Content className='h-100'>
 						            <Tab.Pane eventKey="first">
-						              <h5 className="mb-4">Recommended</h5>
-		                              <Form className="explore-outlets-search mb-4">
-		                                 <InputGroup>
-		                                    <Form.Control type="text" placeholder="Search for dishes..." />
-		                                    <InputGroup.Append>
-		                                       <Button type="button" variant="link">
-		                                       	<Icofont icon="search" />
-		                                       </Button>
-		                                    </InputGroup.Append>
-		                                 </InputGroup>
-		                              </Form>
-		                            
-			                          <Row>
+						       		   <Row>
 			                           
 
 										  {menu}

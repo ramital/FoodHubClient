@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {NavLink,Link, useHistory, Redirect} from 'react-router-dom';
 import {Navbar,Nav,Container,NavDropdown,Image,Badge} from 'react-bootstrap';
 import DropDownTitle from '../common/DropDownTitle';
@@ -8,63 +8,49 @@ import Icofont from 'react-icofont';
  import jwt_decode from 'jwt-decode';
 import Cart from './Cart';
 
-class Header extends React.Component {
+ 
+const Header = (props) => {
 
-  
-	constructor(props) {
-	    super(props);
-	    this.state = {
-	      isNavExpanded: false,
-		  username: null
-	    };
-		
+	const [state, setState] = useState({
+		isNavExpanded: false,
+		username: null
+ }); 
+	
+ function componentDidMount() {				
+	 
+	const token = JwtUtil.getToken();
+	if (token){
+		const decoded = jwt_decode(token);
+		setState({ username: decoded.sub });
 	}
-
-    setIsNavExpanded = (isNavExpanded) => {
-      this.setState({ isNavExpanded: isNavExpanded });
-    }
-
-    closeMenu = () => {
-      this.setState({ isNavExpanded: false });
-    }
-
-    handleClick = (e) => {
-      if (this.node.contains(e.target)) {
-        // if clicked inside menu do something
-      } else {
-        // If clicked outside menu, close the navbar.
-        this.setState({ isNavExpanded: false });
-      }
-    }
-  
-	componentDidMount() {				
-	    document.addEventListener('click', this.handleClick, false);
-
-		const token = JwtUtil.getToken();
-		if (token){
-			const decoded = jwt_decode(token);
-			this.setState({ username: decoded.sub });
-		}
-		else {
-			this.setState({ username: null });
-		}
+	else {
+		setState({ username: null });
 	}
+}
+useEffect(componentDidMount, [props]); 
 
-	handleLogout(){
+   const setIsNavExpanded = (isNavExpanded) => {
+      setState({ isNavExpanded: isNavExpanded });
+    }
+
+    const closeMenu = () => {
+      setState({ isNavExpanded: false });
+    }
+
+ 
+
+
+	
+	function handleLogout(){
 		JwtUtil.clearToken();
-		this.setState({ username: null });
+		setState({ username: null });
 	}
 
-	componentWillUnmount() {
-	    document.removeEventListener('click', this.handleClick, false);
-	}
-
-	render() {
-
+ 
+ 
     	return (
-    		<div ref={node => this.node = node}>
-			<Navbar onToggle={this.setIsNavExpanded}
-           expanded={this.state.isNavExpanded} color="light" expand='lg' className="navbar-light osahan-nav shadow-sm">
+    		<div  	>
+			<Navbar      color="light" expand='lg' className="navbar-light osahan-nav shadow-sm">
 			   <Container>
 
 			      <Navbar.Brand eventKey={0} as={NavLink} to="/">
@@ -73,9 +59,9 @@ class Header extends React.Component {
 			    
 				  <Navbar.Toggle/>
 			      <Navbar.Collapse id="navbarNavDropdown">
-			         <Nav activeKey={0} className="ml-auto" onSelect={this.closeMenu}>
+			         <Nav activeKey={0} className="ml-auto" onSelect={closeMenu}>
 					
-						<Nav.Link eventKey={0} as={NavLink} exact to="/">
+						<Nav.Link eventKey={0} as={NavLink} to="/" exact >
 			               Home 
 			            </Nav.Link>
 
@@ -84,7 +70,7 @@ class Header extends React.Component {
 			            </Nav.Link>
 			            
 
-						{this.state.username?										            
+						{state.username?										            
 							<React.Fragment>
 							<NavDropdown alignRight
 			            	title={
@@ -93,14 +79,15 @@ class Header extends React.Component {
 			            			image="img/general/usr.png"
 			            			imageAlt='user'
 			            			imageClass="nav-osahan-pic rounded-pill"
-			            			title={this.state.username}
+			            			title={state.username}
 			            		/>
 			            	}
 			            >
 					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/profile"><Icofont icon='icofont-user'/> Profile</NavDropdown.Item>
 				 		 
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
-							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => this.handleLogout()} to="/logout"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/pending"><Icofont icon='food-cart'/> Pending</NavDropdown.Item>
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => handleLogout()} to="/logout"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
 				 		  </NavDropdown>
  
 
@@ -111,11 +98,11 @@ class Header extends React.Component {
 			            			image="img/uploaded/burger.jpg"
 			            			imageAlt='user'
 			            			imageClass="nav-osahan-pic rounded-pill"
-			            			title='My Restaurant'
+			            			title='Admin Restaurant'
 			            		/>
 			            	}
 			            >
-					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/profile"><Icofont icon='icofont-user'/> Profile</NavDropdown.Item>
+					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/profile"><Icofont icon='icofont-restaurant'/> Info</NavDropdown.Item>
 				 		 
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
 						 
@@ -141,6 +128,5 @@ class Header extends React.Component {
 			</div>
 		);
 	}
-}
-
+ 
 export default Header;
