@@ -25,10 +25,12 @@ import Logout from './components/Logout';
 import MyRestaurant from './components/MyRestaurant'; 
 
   const APIs = {
-      Authentication: 'http://localhost:8080/authentication'
-      , restaurant: 'http://localhost:8080/restaurant/',
+      Authentication: 'http://localhost:8080/authentication',
+      restaurant: 'http://localhost:8080/restaurants/',
       restaurantItem: 'http://localhost:8080/restaurantItem/',
-      User: 'http://localhost:8080/api/users'
+      User: 'http://localhost:8080/api/users',
+      Signup: 'http://localhost:8080/users',
+      UserRestaurent: 'http://localhost:8080/api/restaurants',
     }
  
 

@@ -48,10 +48,8 @@ class MyRestaurant extends React.Component {
                  </Col>
                  <Col md={9}>
                   <Switch>
-                  <Route path="/myrestaurant/profile" exact component={Profile} />
-                    
-                     <Route path="/myrestaurant/orders" exact component={Orders} />
-                    
+                     <Route path="/myrestaurant/profile" exact component={Profile} />                    
+                     <Route path="/myrestaurant/orders" exact component={Orders} />                                         
                    </Switch>
                  </Col>
               </Row>
