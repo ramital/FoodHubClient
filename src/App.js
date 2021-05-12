@@ -31,6 +31,7 @@ import MyRestaurant from './components/MyRestaurant';
       User: 'http://localhost:8080/api/users'
     }
  
+
 const App = (props) => {
 
   return (
