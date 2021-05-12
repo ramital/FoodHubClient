@@ -22,6 +22,7 @@ const Profile = (props) => {
       axios.get(UserRestaurent, {headers})
       .then(response => {         
          displayData(response.data);
+        
       })
       .catch(error => {
          console.log(error);

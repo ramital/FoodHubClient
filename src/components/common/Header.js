@@ -103,7 +103,7 @@ useEffect(componentDidMount, [props]);
 			            	}
 			            >
 					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/profile"><Icofont icon='icofont-restaurant'/> Info</NavDropdown.Item>
-				 		 
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/Items"><i class="icofont-culinary"></i>Items</NavDropdown.Item>
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
 						 
 						 	  </NavDropdown>
