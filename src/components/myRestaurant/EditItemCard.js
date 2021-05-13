@@ -51,8 +51,6 @@ const EditItemCard = (props) => {
 			form["categoryId"].value = parseInt(props.item.categoryId);
 			form["typeId"].value = parseInt(props.item.typeId);
 
-			console.log(props.item.categoryId);
-			console.log(props.item.typeId);
 		}
 
 	}, [props]);
@@ -69,9 +67,9 @@ const EditItemCard = (props) => {
 
 			const item = {name, ingredient, price, portion, categoryId, typeId};
 
-			axios.post(itemsEndpoint, item, {headers});			
+			axios.post(itemsEndpoint, item, {headers}).then(response => props.onHide(true));	
 		}
-		props.onHide(true);
+		
 	}
 
 	return (
@@ -155,7 +153,7 @@ const EditItemCard = (props) => {
 			</Modal.Body>
 
 			<Modal.Footer>
-				<Button type='button' onClick={props.onHide} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
+				<Button type='button' onClick={() => props.onHide(false)} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
 				<Button type='button' onClick={() => handleAddNew()} variant="primary" className='d-flex w-50 text-center justify-content-center'>{getButtonTitle()}</Button>
 			</Modal.Footer>
 		</Modal>
