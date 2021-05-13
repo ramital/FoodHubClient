@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {NavLink,Link, useHistory, Redirect} from 'react-router-dom';
 import {Navbar,Nav,Container,NavDropdown,Image,Badge} from 'react-bootstrap';
 import DropDownTitle from '../common/DropDownTitle';
@@ -7,26 +7,63 @@ import Icofont from 'react-icofont';
  import JwtUtil from '../../store/JwtUtil';
  import jwt_decode from 'jwt-decode';
 import Cart from './Cart';
+import axios from 'axios';
+import { APIConfig } from '../../store/APIConfig';
 
  
 const Header = (props) => {
 
 	const [state, setState] = useState({
 		isNavExpanded: false,
-		username: null
- }); 
-	
- function componentDidMount() {				
+		username: null,
 	 
+ }); 
+ const [rest, setRest] = useState({
+ 
+	hasrest:null,
+	restimage:null,
+})
+const headers = {
+	'Access-Control-Allow-Origin': '*',      
+	'Content-Type': 'application/json',   
+	'Authorization': 'Bearer ' + JwtUtil.getToken()
+ }
+ function componentDidMount() {		
+ 
 	const token = JwtUtil.getToken();
 	if (token){
 		const decoded = jwt_decode(token);
-		setState({ username: decoded.sub });
+		setState({ username: decoded.sub  });
 	}
 	else {
 		setState({ username: null });
 	}
+	 
+	axios.get(UserRestaurent, {headers})
+	.then(response => {    
+	   if(response.data)
+		{  
+			setRest({ hasrest:response.data.name,restimage:response.data.profileImage });
+		 
+		}
+		else
+		{
+			setRest({});
+		}
+	})
+	.catch(error => {
+	   console.log(state);
+	});
+
+
+	 
 }
+
+const APIs = useContext(APIConfig);
+const UserRestaurent = APIs.UserRestaurent;
+
+ 
+
 useEffect(componentDidMount, [props]); 
 
    const setIsNavExpanded = (isNavExpanded) => {
@@ -90,24 +127,24 @@ useEffect(componentDidMount, [props]);
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => handleLogout()} to="/logout"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
 				 		  </NavDropdown>
  
-
+						  {rest.hasrest&&
 						   <NavDropdown alignRight
 			            	title={
 			            		<DropDownTitle 
 			            			className='d-inline-block' 
-			            			image="img/uploaded/burger.jpg"
+			            			image={"img/uploaded/"+rest.restimage}
 			            			imageAlt='user'
 			            			imageClass="nav-osahan-pic rounded-pill"
-			            			title='Admin Restaurant'
+			            			title={'Admin ('+rest.hasrest+')'}
 			            		/>
 			            	}
 			            >
 					    	<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/profile"><Icofont icon='icofont-restaurant'/> Info</NavDropdown.Item>
-							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/Items"><i class="icofont-culinary"></i>Items</NavDropdown.Item>
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/Items"><i class="icofont-culinary"></i> Items</NavDropdown.Item>
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myrestaurant/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
 						 
 						 	  </NavDropdown>
-			           
+						}
 
 			            <Cart/>
 			            

@@ -1,13 +1,56 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {Row,Col,Container} from 'react-bootstrap';
 import PageTitle from './common/PageTitle';
 import CouponCard from './common/CouponCard';
 import BankOffers from './common/BankOffers';
+import { APIConfig } from '../store/APIConfig';
+import axios from 'axios';
 
-class Offers extends React.Component {
+ 
+const Offers= (props)=>{
 
-	render() {
-    	return (
+
+	const APIs = useContext(APIConfig);
+	const orderLink = APIs.offers;
+	const [posts, setPosts] = useState([]);
+	
+	function fetchPostsHandler() {
+        const headers = {
+            'Access-Control-Allow-Origin': '*',
+
+        }
+       
+        axios(orderLink, { headers })
+            .then(response => {
+				//console.log(response.data)
+				  setPosts(response.data.restaurantOffers);
+            })
+            .catch(error => {
+                
+            })
+
+    }
+
+	   useEffect(() => {
+		fetchPostsHandler();
+    }, [props]);
+
+	const rposts = posts.map(post => {
+        
+        return       <Col md={4}>
+				<CouponCard 
+				title= {post.name}
+				couponCode={post.code} 
+			 	restid={post.restaurant.id}
+				 restname={post.restaurant.name}
+				/>
+		</Col>
+		
+    });
+
+
+
+    return (
     		<>
 	    		<PageTitle 
 	    			title="Offers for you"
@@ -17,33 +60,16 @@ class Offers extends React.Component {
 			         <Container>
 			            <Row>
 			            
-			               <Col md={4}>
-			               	  <CouponCard 
-								  title= 'Get 50% OFF on your first osahan eat order'
-								  logoImage= 'img/bank/1.png'
-								  subTitle= 'Use code OSAHANEAT50 & get 50% off on your first osahan order on Website and Mobile site. Maximum discount: $200'
-								  copyBtnText= 'COPY CODE'
-								  couponCode= 'OSAHANEAT50'
-			               	  />
-			               </Col>
-			               <Col md={4}>
-			               	  <CouponCard 
-								  title= 'Get 50% OFF on your first osahan eat order'
-								  logoImage= 'img/bank/2.png'
-								  subTitle= 'Use code EAT730 & get 50% off on your first osahan order on Website and Mobile site. Maximum discount: $600'
-								  copyBtnText= 'COPY CODE'
-								  couponCode= 'EAT730'
-			               	  />
-			               </Col>
+			         {rposts}
 			             
 			            </Row>
 			            
 			         </Container>
 			    </section>
 	    	</>
-    	);
+     );
     }
-}
+
 
 
 export default Offers;

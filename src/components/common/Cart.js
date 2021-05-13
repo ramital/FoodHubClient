@@ -16,16 +16,22 @@ const Cart = (props) => {
     const [selectedrestaurant, setselectedrestaurant] = useState({});
 
     function fetchPostsHandler() {
-       
+     
+      if(localStorage.getItem("cartItems")!=null)
+      {
+        setselecteditems(JSON.parse(localStorage.getItem("cartItems")));
+      }
+      else
+      {
+        setselectedrestaurant([]);
+        setselecteditems([]);
+        return;
+      }
       if(localStorage.getItem("cartrestaurant")!=null)
       {
         setselectedrestaurant(JSON.parse(localStorage.getItem("cartrestaurant")));
       }
-  
-        if(localStorage.getItem("cartItems")!=null)
-        {
-          setselecteditems(JSON.parse(localStorage.getItem("cartItems")));
-        }
+       
         const headers = {
             'Access-Control-Allow-Origin': '*', 
         } 

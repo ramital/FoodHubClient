@@ -24,6 +24,7 @@ const MyAccount= (props) => {
       const token = JwtUtil.getToken();
       if (token){
          const decoded = jwt_decode(token);
+        
          setState({ username: decoded.sub });
       }
       else {

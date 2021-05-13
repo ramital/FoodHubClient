@@ -20,7 +20,7 @@ const Profile = (props) => {
    function getRestaurantProfile() {
 
       axios.get(UserRestaurent, {headers})
-      .then(response => {         
+      .then(response => {    
          displayData(response.data);
         
       })
@@ -31,13 +31,16 @@ const Profile = (props) => {
 
    function displayData(restaurant){
       const from = formRef.current;
-
+      console.log(restaurant);
       from["name"].value = restaurant.name;
       from["description"].value = restaurant.description;
       from["address"].value = restaurant.address;
       from["contact"].value = restaurant.contact;
       from["deliveredTime"].value = restaurant.deliveredTime;
-
+      from["smalldescription"].value = restaurant.smalldescription;
+      from["coverImage"].value = restaurant.coverImage;
+      from["profileImage"].value = restaurant.profileImage;
+  
       from["hasVeg"].checked = restaurant.hasVeg;
       from["hasChicken"].checked = restaurant.hasChicken;
       from["hasMeat"].checked = restaurant.hasMeat;
@@ -54,17 +57,19 @@ const Profile = (props) => {
 
       restaurant.name = from["name"].value;
       restaurant.description = from["description"].value;
+      restaurant.smalldescription = from["smalldescription"].value;
       restaurant.address = from["address"].value;
       restaurant.contact = from["contact"].value;
       restaurant.deliveredTime = from["deliveredTime"].value;
+      restaurant.coverImage = from["coverImage"].value;
+      restaurant.profileImage = from["profileImage"].value;
 
       restaurant.hasVeg = from["hasVeg"].checked;
       restaurant.hasChicken = from["hasChicken"].checked;
       restaurant.hasMeat = from["hasMeat"].checked;
       restaurant.hasFish = from["hasFish"].checked;
       
-
-      axios.post(UserRestaurent, restaurant, {headers})
+     axios.post(UserRestaurent, restaurant, {headers})
       .catch(error => {
          console.log(error);
       });
@@ -74,7 +79,12 @@ const Profile = (props) => {
          <div className='p-4 bg-white shadow-sm'>
          <Form ref={formRef}>
             <div className="form-row">
+            <Form.Control   type="hidden"      name={'coverImage'} />
+            <Form.Control   type="hidden"  name={'profileImage'} />
+              
                <Form.Group className="col-md-12">
+              
+           
                   <Form.Label>Name</Form.Label>
                   <InputGroup>
                      <Form.Control name="name" type="text" placeholder="Restaurant Name" /> 
@@ -82,9 +92,18 @@ const Profile = (props) => {
                </Form.Group>
 
                <Form.Group className="col-md-12">
+                  <Form.Label> Description</Form.Label>
+                  <InputGroup>
+                     <Form.Control name="description" type="text" placeholder="Description " /> 
+                  </InputGroup> 
+               </Form.Group>
+
+
+
+               <Form.Group className="col-md-12">
                   <Form.Label>Small Description</Form.Label>
                   <InputGroup>
-                     <Form.Control name="description" type="text" placeholder="Small Description (50 characters)" /> 
+                     <Form.Control name="smalldescription" type="text" placeholder="Small Description" /> 
                   </InputGroup> 
                </Form.Group>
 
@@ -108,21 +127,15 @@ const Profile = (props) => {
                   <Form.Control name="deliveredTime" type="text" placeholder="Open and close time" />
                </Form.Group>
 
-               <Form.Group className="col-md-12">
-                  <Form.Label>Has Veg</Form.Label>
-                  <Form.Control name="hasVeg" type="checkbox" />
-
-                  <Form.Label>Has Chicken</Form.Label>
-                  <Form.Control name="hasChicken" type="checkbox" />
-
-                  <Form.Label>Has Meat</Form.Label>
-                  <Form.Control name="hasMeat" type="checkbox"/>
-
-                  <Form.Label>Has Fish</Form.Label>
-                  <Form.Control name="hasFish" type="checkbox" />
+               <Form.Group className="col-md-12 mt-2 pb-2 pl-2 ">
+                    <Form.Check type='checkbox'  name='hasVeg'    label='Vegetarian Menu' />
+                    <Form.Check type='checkbox'  name='hasChicken'    label='Chicken Menu' />
+                    <Form.Check type='checkbox'  name='hasMeat'    label='Meat Menu' />
+                    <Form.Check type='checkbox'  name='hasFish'    label='Fish Menu' />
+                   
                </Form.Group>
 
-               <button onClick={() => handleUpdate()} className="btn btn-sm btn-outline-info btn-block btn-login text-uppercase font-weight-bold mb-2">save</button>
+               <button type="button" onClick={() => handleUpdate()} className="btn btn-sm btn-outline-info btn-block btn-login text-uppercase font-weight-bold mb-2">save</button>
             </div>
          </Form>      
          

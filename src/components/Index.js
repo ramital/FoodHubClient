@@ -52,7 +52,7 @@ import { APIConfig } from '../store/APIConfig';
     	   axios(link, { headers })
             .then(response => {
 				 setPosts(response.data.restaurants);
-			 console.log(response.data.restaurants)
+		 
             })
             .catch(error => {
                
@@ -103,22 +103,7 @@ import { APIConfig } from '../store/APIConfig';
 					</Container>
 				</section>
 
-			   
-			    <section className="section pt-5 pb-5 bg-white becomemember-section border-bottom">
-			         <Container>
-			         	<SectionHeading 
-			         		heading='Become a Member'
-			         		subHeading='Join us Now'
-			         	/>
-			            <Row>
-			               <Col sm={12} className="text-center">
-			                  <Link to="register" className="btn btn-success btn-lg">
-			                  	Create an Account <FontAwesome icon='chevron-circle-right' />
-			                  </Link>
-			               </Col>
-			            </Row>
-			         </Container>
-			    </section>
+			  
 
     		</>
     	);

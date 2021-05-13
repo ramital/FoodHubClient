@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {Link} from 'react-router-dom';
 import {Row,Col,Container,Form,InputGroup,Button,Tab,Nav,ButtonToolbar,ToggleButton,ToggleButtonGroup,Image,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import ItemsCarousel from './common/ItemsCarousel';
@@ -7,27 +7,49 @@ import CheckoutItem from './common/CheckoutItem';
 import AddAddressModal from './modals/AddAddressModal';
 import Icofont from 'react-icofont';
 import CheckoutList from './common/CheckoutList';
+import { APIConfig } from '../store/APIConfig';
+import JwtUtil from '../store/JwtUtil';
+import axios from 'axios'
 
-class Checkout extends React.Component {
-	constructor(props, context) {
-	    super(props, context);
+		const Checkout  = (props) => {
+ 
+			const APIs = useContext(APIConfig);
+			const orderLink = APIs.order;
+			 const headers = {
+				'Access-Control-Allow-Origin': '*',      
+				'Content-Type': 'application/json',   
+				'Authorization': 'Bearer ' + JwtUtil.getToken()
+			 }
 
-	    this.state = {
-      	  showAddressModal: false,
-	    };
-	}
+			function checkoutfunction(){
 
-    hideAddressModal = () => this.setState({ showAddressModal: false });
-    getQty = ({id,quantity}) => {
-    	//console.log(id);
-    	//console.log(quantity);
-	}
+				let selectedItems=JSON.parse(localStorage.getItem("cartItems"));
+				let selectedrest=JSON.parse(localStorage.getItem("cartrestaurant"));
+				const data = {"restaurantId":selectedrest.restid,"items": selectedItems};
+			 
+				axios.post(orderLink, data, {headers}).then(response => {   
+				 
+					if(response.status==200)
+				{
+					alert('Order Submited Successfully');
 
-	render() {
+					localStorage.removeItem("cartrestaurant");
+					localStorage.removeItem("cartItems");
+					props.history.push ("/myaccount/pending");
+				}
+				else
+				{ 	alert('Order Error!'); }
+
+				}
+				
+				);
+				 
+
+			}
+
     	return (
     		<section className="offer-dedicated-body mt-4 mb-4 pt-2 pb-2">
-    		 <AddAddressModal show={this.state.showAddressModal} onHide={this.hideAddressModal}/>
-	         <Container>
+    	        <Container>
 	            <Row>
 	               <Col md={8}>
 	                  <div className="offer-dedicated-body-left">
@@ -35,13 +57,14 @@ class Checkout extends React.Component {
 	                     <div className="bg-white rounded shadow-sm p-4 osahan-payment">
 	                        <h4 className="mb-1">Choose payment method</h4>
 	                        <h6 className="mb-3 text-black-50">Credit/Debit Cards</h6>
-	                        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+	                        <Tab.Container id="left-tabs-example" defaultActiveKey="second">
 	                          <Row>
 	                            <Col sm={4} className="pr-0">
 	                              <Nav variant="pills" className="flex-column">
-	                                  <Nav.Link eventKey="first"><Icofont icon="credit-card" /> Credit/Debit Cards</Nav.Link>
+								  <Nav.Link eventKey="second"><Icofont icon="money" /> Pay on Delivery</Nav.Link>
+								    <Nav.Link eventKey="first"><Icofont icon="credit-card" /> Credit/Debit Cards</Nav.Link>
 	                                
-	                                  <Nav.Link eventKey="second"><Icofont icon="money" /> Pay on Delivery</Nav.Link>
+	                               
 	                              </Nav>
 	                            </Col>
 	                            <Col sm={8} className="pl-0">
@@ -87,9 +110,8 @@ class Checkout extends React.Component {
 											      />
 	                                          </Form.Group>
 	                                          <Form.Group className="col-md-12 mb-0">
-	                                             <Link to="/thanks" className="btn btn-success btn-block btn-lg">PAY $1329
-	                                             	<Icofont icon="long-arrow-right" />
-	                                             </Link>
+											  <button type="button" onClick={checkoutfunction } className="btn btn-success btn-block btn-lg"> Proceed  
+	                                       <Icofont icon="long-arrow-right" /></button>
 	                                          </Form.Group>
 	                                       </div>
 	                                    </Form>
@@ -99,8 +121,8 @@ class Checkout extends React.Component {
 	                                    <p>Please keep exact change handy to help us serve you better</p>
 	                                    <hr />
 	                                    <Form>
-	                                       <Link to="/thanks" className="btn btn-success btn-block btn-lg">PAY $1329
-	                                       <Icofont icon="long-arrow-right" /></Link>
+	                                       <button type="button" onClick={checkoutfunction } className="btn btn-success btn-block btn-lg"> Proceed  
+	                                       <Icofont icon="long-arrow-right" /></button>
 	                                    </Form>
 	                                </Tab.Pane>
 	                              </Tab.Content>
@@ -120,7 +142,6 @@ class Checkout extends React.Component {
 	      </section>
     	);
     }
-}
-
+ 
 
 export default Checkout;
