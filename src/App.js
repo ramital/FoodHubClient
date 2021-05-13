@@ -33,16 +33,8 @@ import MyRestaurant from './components/MyRestaurant';
       UserRestaurent: 'http://localhost:8080/api/restaurants',
       offers: 'http://localhost:8080/restaurantOffer',
       Items: 'http://localhost:8080/api/restaurantItem',
-   
-// <<<<<<< HEAD
-//       Items: 'http://localhost:8080/api/items',
-//       offers: 'http://localhost:8080/restaurantOffer', 
-// =======
-//       Items: 'http://localhost:8080/api/restaurantItem',
-   
-// >>>>>>> a20cd801dc58629bdc7ed64eef06149427a2df81
-   
-}
+     
+  }
  
 
 const App = (props) => {

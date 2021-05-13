@@ -44,6 +44,7 @@ const EditItemCard = (props) => {
 	useEffect(() => {
 		if (isEdit()){
 			const form = formRef.current;
+			form["id"].value = props.item.id;
 			form["name"].value = props.item.name;
 			form["ingredient"].value = props.item.ingredient;
 			form["price"].value = props.item.price;
@@ -55,21 +56,29 @@ const EditItemCard = (props) => {
 
 	}, [props]);
 
-	function handleAddNew(){
-		if (!isEdit()) {
-			const form = formRef.current;
-			const name = form["name"].value;
-			const ingredient = form["ingredient"].value;
-			const price = parseInt(form["price"].value);
-			const portion = form["portion"].value;
-			const categoryId = parseInt(form["categoryId"].value);
-			const typeId = parseInt(form["typeId"].value);
+	function handleButton(){
+		const form = formRef.current;
+		const name = form["name"].value;
+		const ingredient = form["ingredient"].value;
+		const price = parseInt(form["price"].value);
+		const portion = form["portion"].value;
+		const categoryId = parseInt(form["categoryId"].value);
+		const typeId = parseInt(form["typeId"].value);
+		const id = parseInt(form["id"].value);
+		const item = {id,name, ingredient, price, portion, categoryId, typeId};
 
-			const item = {name, ingredient, price, portion, categoryId, typeId};
-
+		if (!isEdit())
+		 {
 			axios.post(itemsEndpoint, item, {headers}).then(response => props.onHide(true));	
-		}
 		
+		}
+		else
+		{
+			 
+		 	axios.put(itemsEndpoint, item, {headers}).then(response => props.onHide(true));	
+		
+		}
+
 	}
 
 	return (
@@ -83,7 +92,10 @@ const EditItemCard = (props) => {
 			</Modal.Header>
 
 			<Modal.Body>
+
 				<Form ref={formRef}>
+				<Form.Control   type="hidden"      name={'id'} />
+         
 					<div className="form-row">
 						<Form.Group className="col-md-12">
 							<Form.Label>Name</Form.Label>
@@ -108,7 +120,7 @@ const EditItemCard = (props) => {
 						<Form.Group className="mb-0 col-md-12">
 							<Form.Label>Category</Form.Label>
 							<ButtonToolbar>
-								<ToggleButtonGroup className="d-flex w-100" type="radio" name="categoryId" >
+								<ToggleButtonGroup value={props.item.categoryId} className="d-flex w-100" type="radio" name="categoryId" >
 									<ToggleButton variant='info' value={1}>
 										Dishes
     							    </ToggleButton>
@@ -128,7 +140,7 @@ const EditItemCard = (props) => {
 						<Form.Group className="mb-0 col-md-12">
 							<Form.Label>Type</Form.Label>
 							<ButtonToolbar>
-								<ToggleButtonGroup className="d-flex w-100" type="radio" name="typeId">
+								<ToggleButtonGroup value={props.item.typeId} className="d-flex w-100" type="radio" name="typeId">
 									<ToggleButton variant='info' value={1}>
 										Veg
     							    </ToggleButton>
@@ -154,7 +166,7 @@ const EditItemCard = (props) => {
 
 			<Modal.Footer>
 				<Button type='button' onClick={() => props.onHide(false)} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
-				<Button type='button' onClick={() => handleAddNew()} variant="primary" className='d-flex w-50 text-center justify-content-center'>{getButtonTitle()}</Button>
+				<Button type='button' onClick={() => handleButton()} variant="primary" className='d-flex w-50 text-center justify-content-center'>{getButtonTitle()}</Button>
 			</Modal.Footer>
 		</Modal>
 	);

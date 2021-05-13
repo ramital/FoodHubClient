@@ -6,8 +6,7 @@ import Icofont from 'react-icofont';
 import axios from 'axios'
 import JwtUtil from '../../store/JwtUtil';
 import { APIConfig } from '../../store/APIConfig';
-
-//class OrderCard extends React.Component {
+ 
 const	OrderCard =(props)=>{
 	const APIs = useContext(APIConfig);
 	const order = APIs.order;
@@ -22,24 +21,20 @@ const	OrderCard =(props)=>{
 	const [selectedOption, setSelectedOption] = useState(props.statusid);
  
     const PostDataHandler = () => {
+		 
 		if(selectedOption===undefined)
 		{alert('Change the status to update!');
 		return;} 
     
-	const data = {"idOrder":props.orderid , "idStatus":selectedOption };
+		const data = {"idOrder":props.orderid , "idStatus":selectedOption };
 	
-	axios.put(order, data, {headers}).then(response => {               
-	  
-		alert('Saved!');
-
-		props.history.push(props.history.location.pathname)
-	}) .catch(error => {
-		alert('Error!');
-	 });
+		axios.put(order, data, {headers}).then(response => {               
+	  	  alert('Saved!');
+			 
+		}) ;
 
     }
-
-
+ 
 
 	
     	return (
