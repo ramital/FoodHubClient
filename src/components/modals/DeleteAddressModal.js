@@ -16,12 +16,12 @@ class DeleteAddressModal extends React.Component {
 			  </Modal.Header>
 
 			  <Modal.Body>
-  				<p className="mb-0 text-black">Are you sure you want to delete this xxxxx?</p>   
+  				<p className="mb-0 text-black">Are you sure you want to delete <strong>{this.props.item}</strong>?</p>   
 			  </Modal.Body>
 
 			  <Modal.Footer>
 			    <Button type='button' onClick={this.props.onHide} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
-			    <Button type='button' variant="primary" className='d-flex w-50 text-center justify-content-center'>DELETE</Button>
+			    <Button type='button' onClick={this.props.onDelete} variant="primary" className='d-flex w-50 text-center justify-content-center'>DELETE</Button>
 			  </Modal.Footer>
 			</Modal>
     	);

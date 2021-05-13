@@ -1,44 +1,100 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';  
 import DeleteAddressModal from '../modals/DeleteAddressModal';
 import OrderCard from '../myRestaurant/OrderCard';
 import EditItemCard from './EditItemCard';
 import ItemCard from './ItemCard';
- 
-const Items= ()=>{
+import axios from 'axios';
+import { APIConfig } from '../../store/APIConfig';
+import JwtUtil from '../../store/JwtUtil';
+
+const Items= (props)=>{
 	 
 	const [state, setState] = useState({});
+	const [items, setItems] = useState([]);
+	const [activeItem, setActiveItem] = useState({});
+
+	const APIs = useContext(APIConfig);
+	const itemsEndpoint = APIs.Items;
    
-  const  hideDeleteModal = () => setState({ showDeleteModal: false });
-  const hideAddressModal = () => setState({ showAddressModal: false });
+  	const hideDeleteModal = () => setState({ showDeleteModal: false });
+  	const hideAddressModal = () => setState({ showAddressModal: false });
+
+	const headers = {
+		'Access-Control-Allow-Origin': '*',      
+		'Content-Type': 'application/json',   
+		'Authorization': 'Bearer ' + JwtUtil.getToken()
+	}
+
+	function handleChange(isDelete, currentItem){
+		if (isDelete){
+			setState({ showDeleteModal: true });
+		}
+		else { //edit
+			setState({ showAddressModal: true });
+		}
+
+		setActiveItem({...currentItem});
+	}
+
+	const handleDelete = () => {
+		const id = activeItem.id;
+		axios.delete(itemsEndpoint + "/" + id, {headers});
+		hideDeleteModal();
+
+		const newItems = items.filter(item => item.id != id);
+		setItems(newItems);
+	}
+
+	function loadItems(){
+		axios.get(itemsEndpoint, {headers}).then(response => {
+			const restaurantItems = response.data.restaurantItems;
+			console.log(restaurantItems);
+			setItems(restaurantItems)
+		});
+	}
+
+	function displayItems(){
+		return items.map(item => 
+			<React.Fragment>
+				<Col md={6}>
+						<ItemCard
+							item={item}
+							boxClass="border border-primary shadow"
+							title= 'Chicken crispy'
+							icoIcon= 'icofont-culinary'
+							iconclassName= 'icofont-3x'
+							address= 'Osahan House, Jawaddi Kalan, Ludhiana, Punjab 141002, India'
+							onEditClick= {() => handleChange(false, item)}
+							onDeleteClick={() => handleChange(true, item)}
+						/>
+				</Col>
+			</React.Fragment>
+		);
+		
+	}
+
+	useEffect(() => {
+		loadItems();
+	} ,[]);
 
 
-    	return (
-			<>
-	        <EditItemCard show={state.showAddressModal} onHide={hideAddressModal}/>
-	        <DeleteAddressModal show={state.showDeleteModal} onHide={hideDeleteModal}/>
-		    <div className='p-4 bg-white shadow-sm'>
-              <Row>
-               <Col md={12}>
-                  <h4 className="font-weight-bold mt-0 mb-3">Items</h4>
-               </Col>
-               <Col md={6}>
-               	  <ItemCard 
-               	  	  boxClass="border border-primary shadow"
-					  title= 'Chicken crispy'
-					  icoIcon= 'icofont-culinary'
-					  iconclassName= 'icofont-3x'
-					  address= 'Osahan House, Jawaddi Kalan, Ludhiana, Punjab 141002, India'
-					  onEditClick= {() => setState({ showAddressModal: true })}
-					  onDeleteClick={() => setState({ showDeleteModal: true })}
-               	  />
-               </Col>
-               
-              </Row>
-		    </div>
-	      </>
-    	);
-    }
+	return (
+		<React.Fragment>
+			<EditItemCard show={state.showAddressModal} onHide={hideAddressModal}/>
+			<DeleteAddressModal show={state.showDeleteModal} onHide={hideDeleteModal} onDelete={handleDelete} item={activeItem.name}/>
+
+			<div className='p-4 bg-white shadow-sm'>
+				<Row>
+					<Col md={12}>
+						<h4 className="font-weight-bold mt-0 mb-3">Items</h4>
+					</Col>				
+					{displayItems()}
+				</Row>
+			</div>
+		</React.Fragment>
+	);
+}
  
 export default Items;
