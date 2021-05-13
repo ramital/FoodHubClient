@@ -58,7 +58,7 @@ const Items= (props)=>{
 			setItems(newItems);
 		})
 		.catch(err => {
-			console.log(err);
+			alert("Can not delete the item: " + activeItem.name);
 		})
 
 		hideDeleteModal();		
