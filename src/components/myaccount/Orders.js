@@ -18,7 +18,7 @@ import JwtUtil from '../../store/JwtUtil';
 		useEffect(fetchPostsHandler, [props]); // This will be fetched when mounted
 		
 		function fetchPostsHandler() {
-		 
+		
 		   axios(OrderLink, { headers })
 				.then(response => {
 					setPosts(response.data.orders);

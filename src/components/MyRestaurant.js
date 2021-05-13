@@ -36,7 +36,7 @@ class MyRestaurant extends React.Component {
                           </li>  
 
                           <li className="nav-item">
-                             <NavLink className="nav-link" activeClassName="active" exact to="/myrestaurant/orders"><i className="icofont-food-cart"></i> Orders</NavLink>
+                             <NavLink className="nav-link" activeClassName="active" exact to="/myrestaurant/orders"><i className="icofont-food-cart"></i> Pending</NavLink>
                           </li>  
                         
                          

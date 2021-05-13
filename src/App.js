@@ -32,7 +32,7 @@ import MyRestaurant from './components/MyRestaurant';
       order: 'http://localhost:8080/api/order',
       UserRestaurent: 'http://localhost:8080/api/restaurants',
       Items: 'http://localhost:8080/api/items',
-      offers: 'http://localhost:8080/restaurantOffer'
+      offers: 'http://localhost:8080/restaurantOffer', 
      }
  
 
