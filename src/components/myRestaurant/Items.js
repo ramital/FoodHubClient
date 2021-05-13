@@ -19,7 +19,13 @@ const Items= (props)=>{
 	const itemsEndpoint = APIs.Items;
    
   	const hideDeleteModal = () => setState({ showDeleteModal: false });
-  	const hideAddressModal = () => setState({ showAddressModal: false });
+  	const hideAddressModal = (reload) => {
+		  setState({ showAddressModal: false });
+
+		  if (reload){
+			  loadItems();
+		  }
+	};
 
 	const headers = {
 		'Access-Control-Allow-Origin': '*',      
@@ -27,24 +33,35 @@ const Items= (props)=>{
 		'Authorization': 'Bearer ' + JwtUtil.getToken()
 	}
 
-	function handleChange(isDelete, currentItem){
-		if (isDelete){
+	function handleChange(action, currentItem){
+		if (action === 'delete'){
 			setState({ showDeleteModal: true });
+			setActiveItem({...currentItem});
 		}
-		else { //edit
+		else if (action === 'edit'){
 			setState({ showAddressModal: true });
+			setActiveItem({...currentItem});
+		}
+		else if (action === 'add'){
+			setState({ showAddressModal: true });
+			setActiveItem({...currentItem});
 		}
 
-		setActiveItem({...currentItem});
+		
 	}
 
 	const handleDelete = () => {
 		const id = activeItem.id;
-		axios.delete(itemsEndpoint + "/" + id, {headers});
-		hideDeleteModal();
+		axios.delete(itemsEndpoint + "/" + id, {headers})
+		.then(resp => {
+			const newItems = items.filter(item => item.id != id);
+			setItems(newItems);
+		})
+		.catch(err => {
+			console.log(err);
+		})
 
-		const newItems = items.filter(item => item.id != id);
-		setItems(newItems);
+		hideDeleteModal();		
 	}
 
 	function loadItems(){
@@ -66,8 +83,8 @@ const Items= (props)=>{
 							icoIcon= 'icofont-culinary'
 							iconclassName= 'icofont-3x'
 							address= 'Osahan House, Jawaddi Kalan, Ludhiana, Punjab 141002, India'
-							onEditClick= {() => handleChange(false, item)}
-							onDeleteClick={() => handleChange(true, item)}
+							onEditClick= {() => handleChange("edit", item)}
+							onDeleteClick={() => handleChange("delete", item)}
 						/>
 				</Col>
 			</React.Fragment>
@@ -82,13 +99,14 @@ const Items= (props)=>{
 
 	return (
 		<React.Fragment>
-			<EditItemCard show={state.showAddressModal} onHide={hideAddressModal}/>
+			<EditItemCard show={state.showAddressModal} onHide={hideAddressModal} item={state.showAddressModal?activeItem:{}} />
 			<DeleteAddressModal show={state.showDeleteModal} onHide={hideDeleteModal} onDelete={handleDelete} item={activeItem.name}/>
 
 			<div className='p-4 bg-white shadow-sm'>
 				<Row>
 					<Col md={12}>
-						<h4 className="font-weight-bold mt-0 mb-3">Items</h4>
+						<h4 className="font-weight-bold mt-0 mb-3 m-2" style={{display: "inline"}}>Items</h4>
+						<button onClick={() => handleChange("add", {})} className="btn btn-sm btn-outline-info btn-inline text-uppercase font-weight-bold mb-2">ADD NEW ITEM</button>
 					</Col>				
 					{displayItems()}
 				</Row>
