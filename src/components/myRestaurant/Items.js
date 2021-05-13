@@ -19,7 +19,7 @@ const Items= (props)=>{
 	const itemsEndpoint = APIs.Items;
    
   	const hideDeleteModal = () => setState({ showDeleteModal: false });
-  	const hideAddressModal = (reload) => {
+  	const hideAddressModal = (reload = false) => {
 		  setState({ showAddressModal: false });
 
 		  if (reload){
@@ -68,7 +68,7 @@ const Items= (props)=>{
 		axios.get(itemsEndpoint, {headers}).then(response => {
 			const restaurantItems = response.data.restaurantItems;
 			console.log(restaurantItems);
-			setItems(restaurantItems)
+			setItems(restaurantItems);
 		});
 	}
 
