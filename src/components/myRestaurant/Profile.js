@@ -34,6 +34,8 @@ const Profile = (props) => {
 
       from["name"].value = restaurant.name;
       from["description"].value = restaurant.description;
+      from["smalldescription"].value = restaurant.smalldescription;
+
       from["address"].value = restaurant.address;
       from["contact"].value = restaurant.contact;
       from["deliveredTime"].value = restaurant.deliveredTime;
@@ -42,6 +44,7 @@ const Profile = (props) => {
       from["hasChicken"].checked = restaurant.hasChicken;
       from["hasMeat"].checked = restaurant.hasMeat;
       from["hasFish"].checked = restaurant.hasFish;
+      
    }
 
    useEffect(() => {
@@ -54,6 +57,7 @@ const Profile = (props) => {
 
       restaurant.name = from["name"].value;
       restaurant.description = from["description"].value;
+      restaurant.smalldescription = from["smalldescription"].value;      
       restaurant.address = from["address"].value;
       restaurant.contact = from["contact"].value;
       restaurant.deliveredTime = from["deliveredTime"].value;
@@ -82,9 +86,16 @@ const Profile = (props) => {
                </Form.Group>
 
                <Form.Group className="col-md-12">
+                  <Form.Label>Description</Form.Label>
+                  <InputGroup>
+                     <Form.Control name="description" type="text" placeholder="Description" /> 
+                  </InputGroup> 
+               </Form.Group>
+
+               <Form.Group className="col-md-12">
                   <Form.Label>Small Description</Form.Label>
                   <InputGroup>
-                     <Form.Control name="description" type="text" placeholder="Small Description (50 characters)" /> 
+                     <Form.Control name="smalldescription" type="text" placeholder="Small Description (50 characters)" /> 
                   </InputGroup> 
                </Form.Group>
 
