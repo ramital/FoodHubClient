@@ -12,9 +12,10 @@ const ItemCard =(props)=>{
                <Media>
                   <div className="mr-3"><Icofont icon={props.icoIcon} className={props.iconclassName} /></div>
                   <div className="media-body">
-                     <h6 className="mb-1 text-secondary">{props.title}</h6>
-                     <p className="text-black">{props.address}
-                     </p>
+                     <h6 className="mb-1 text-secondary">{props.item.name}</h6>
+                     <p className="text-black">{props.item.categoryName}</p>
+                     <p className="text-black">$ {props.item.price}</p>
+
                      <p className="mb-0 text-black font-weight-bold">
                         <Link className="text-primary mr-3" to="#" onClick={props.onEditClick}><Icofont icon="ui-edit" /> EDIT</Link>
                         <Link className="text-danger" to="#" onClick={props.onDeleteClick}><Icofont icon="ui-delete" /> DELETE</Link></p>

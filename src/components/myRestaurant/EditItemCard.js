@@ -1,65 +1,165 @@
-import React from 'react';
-import {Form,InputGroup,Modal,ButtonToolbar,Button,ToggleButton,ToggleButtonGroup} from 'react-bootstrap';
+import axios from 'axios';
+import React, { useContext, useEffect, useRef } from 'react';
+import { Form, InputGroup, Modal, ButtonToolbar, Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Icofont from 'react-icofont';
+import { APIConfig } from '../../store/APIConfig';
+import JwtUtil from '../../store/JwtUtil';
 
- 
- const EditItemCard =(props)=>{
-    	return (
-	        <Modal 
-	        	show={props.show} 
-	        	onHide={props.onHide}
-		        centered
-		   	  >
-			  <Modal.Header closeButton={true}>
-			    <Modal.Title as='h5' id="add-address">Add/Edit Item</Modal.Title>
-			  </Modal.Header>
 
-			  <Modal.Body>
-  				<Form>
-             <div className="form-row">
-                <Form.Group className="col-md-12">
-                   <Form.Label>Delivery Area</Form.Label>
-                   <InputGroup>
-                      <Form.Control type="text" placeholder="Delivery Area" />
-                      <InputGroup.Append>
-                         <Button variant="outline-secondary" type="button" id="button-addon2"><Icofont icon="ui-pointer"/></Button>
-                      </InputGroup.Append>
-                   </InputGroup>
-                </Form.Group>
-                <Form.Group className="col-md-12">
-                   <Form.Label>Complete Address</Form.Label>
-                   <Form.Control type="text" placeholder="Complete Address e.g. house number, street name, landmark" />
-                </Form.Group>
-                <Form.Group className="col-md-12">
-                   <Form.Label>Delivery Instructions</Form.Label>
-                   <Form.Control type="text" placeholder="Delivery Instructions e.g. Opposite Gold Souk Mall" />
-                </Form.Group>
-                <Form.Group className="mb-0 col-md-12">
-                   <Form.Label>Nickname</Form.Label>
-                   <ButtonToolbar>
-                      <ToggleButtonGroup className="d-flex w-100" type="radio" name="options" defaultValue={1}>
-    							    <ToggleButton variant='info' value={1}>
-    							      Home
-    							    </ToggleButton>
-    							    <ToggleButton variant='info' value={2}>
-    							      Work
-    							    </ToggleButton>
-    							    <ToggleButton variant='info' value={3}>
-    							      Other
-    							    </ToggleButton>
-        					    </ToggleButtonGroup>
-    						  </ButtonToolbar>
-                </Form.Group>
-             </div>
-          </Form>      
-			  </Modal.Body>
+const EditItemCard = (props) => {
 
-			  <Modal.Footer>
-			    <Button type='button' onClick={props.onHide} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
-			    <Button type='button' variant="primary" className='d-flex w-50 text-center justify-content-center'>SUBMIT</Button>
-			  </Modal.Footer>
-			</Modal>
-    	);
-    }
+	const formRef = useRef();
+
+	const headers = {
+		'Access-Control-Allow-Origin': '*',      
+		'Content-Type': 'application/json',   
+		'Authorization': 'Bearer ' + JwtUtil.getToken()
+	}
+	const APIs = useContext(APIConfig);
+	const itemsEndpoint = APIs.Items;
+
+
+	function isEdit(){
+		return Object.keys(props.item).length !== 0 || props.item.constructor !== Object;
+	}
+
+	function getFormTitle(){
+		if (isEdit()){
+			return "Edit Item (under constructor)";
+		}
+		else {			
+			return "Add New Item";
+		}
+	}
+
+	function getButtonTitle(){
+		if (isEdit()){
+			return "Update";
+		}
+		else {			
+			return "Add New";
+		}
+	}
+
+	useEffect(() => {
+		if (isEdit()){
+			const form = formRef.current;
+			form["name"].value = props.item.name;
+			form["ingredient"].value = props.item.ingredient;
+			form["price"].value = props.item.price;
+			form["portion"].value = props.item.portion;
+			form["categoryId"].value = parseInt(props.item.categoryId);
+			form["typeId"].value = parseInt(props.item.typeId);
+
+			console.log(props.item.categoryId);
+			console.log(props.item.typeId);
+		}
+
+	}, [props]);
+
+	function handleAddNew(){
+		if (!isEdit()) {
+			const form = formRef.current;
+			const name = form["name"].value;
+			const ingredient = form["ingredient"].value;
+			const price = parseInt(form["price"].value);
+			const portion = form["portion"].value;
+			const categoryId = parseInt(form["categoryId"].value);
+			const typeId = parseInt(form["typeId"].value);
+
+			const item = {name, ingredient, price, portion, categoryId, typeId};
+
+			axios.post(itemsEndpoint, item, {headers});			
+		}
+		props.onHide(true);
+	}
+
+	return (
+		<Modal
+			show={props.show}
+			onHide={props.onHide}
+			centered
+		>
+			<Modal.Header closeButton={true}>
+				<Modal.Title as='h5' id="add-address">{getFormTitle()}</Modal.Title>
+			</Modal.Header>
+
+			<Modal.Body>
+				<Form ref={formRef}>
+					<div className="form-row">
+						<Form.Group className="col-md-12">
+							<Form.Label>Name</Form.Label>
+							<Form.Control name="name" type="text" placeholder="Item name" />								
+						</Form.Group>
+
+						<Form.Group className="col-md-12">
+							<Form.Label>Ingredient</Form.Label>
+							<Form.Control name="ingredient" type="text" placeholder="Ingredient e.g fish, beef, onion.." />
+						</Form.Group>
+
+						<Form.Group className="col-md-12">
+							<Form.Label>Price</Form.Label>
+							<Form.Control name="price" type="text" placeholder="Item price" />
+						</Form.Group>
+
+						<Form.Group className="col-md-12">
+							<Form.Label>Portion</Form.Label>
+							<Form.Control name="portion" type="text" placeholder="Item protion" />
+						</Form.Group>
+
+						<Form.Group className="mb-0 col-md-12">
+							<Form.Label>Category</Form.Label>
+							<ButtonToolbar>
+								<ToggleButtonGroup className="d-flex w-100" type="radio" name="categoryId" >
+									<ToggleButton variant='info' value={1}>
+										Dishes
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={2}>
+										Sandwiches
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={3}>
+										Salads
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={4}>
+										Drink
+    							    </ToggleButton>
+								</ToggleButtonGroup>
+							</ButtonToolbar>
+						</Form.Group>
+
+						<Form.Group className="mb-0 col-md-12">
+							<Form.Label>Type</Form.Label>
+							<ButtonToolbar>
+								<ToggleButtonGroup className="d-flex w-100" type="radio" name="typeId">
+									<ToggleButton variant='info' value={1}>
+										Veg
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={2}>
+										Chicks
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={3}>
+										Beef
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={4}>
+										Fish
+    							    </ToggleButton>
+									<ToggleButton variant='info' value={5}>
+										Other
+    							    </ToggleButton>
+								</ToggleButtonGroup>
+							</ButtonToolbar>
+						</Form.Group>
+
+					</div>
+				</Form>
+			</Modal.Body>
+
+			<Modal.Footer>
+				<Button type='button' onClick={props.onHide} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
+				<Button type='button' onClick={() => handleAddNew()} variant="primary" className='d-flex w-50 text-center justify-content-center'>{getButtonTitle()}</Button>
+			</Modal.Footer>
+		</Modal>
+	);
+}
 
 export default EditItemCard;
