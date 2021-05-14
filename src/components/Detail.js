@@ -51,6 +51,7 @@ import axios from 'axios';
 			} 
 			  axios(Restlink+match.params.id, { headers })
 				.then(response => {
+					console.log(response.data.restaurant)
 				 	setrestaurant(response.data.restaurant);
 				 })
 				.catch(error => {    
@@ -208,7 +209,7 @@ import axios from 'axios';
 	                  <Col md={8}>
 					    
 	                     <div className="restaurant-detailed-header-left">
-	                     <Image fluid className="mr-3 float-left" alt="osahan" src="/img/uploaded/Burger.jpg" />
+	                     <Image fluid className="mr-3 float-left" alt="osahan" src={"/img/uploaded/"+ restaurant.profileImage}/>
 	                       <h2 className="text-white">{restaurant.name}</h2>
 	                        <p className="text-white mb-1"><Icofont icon="location-pin" /> {restaurant.address}  
 	                        </p>
