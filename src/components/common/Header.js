@@ -124,7 +124,7 @@ useEffect(componentDidMount, [props]);
 				 		 
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/orders"><Icofont icon='food-cart'/> Orders</NavDropdown.Item>
 							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" to="/myaccount/pending"><Icofont icon='food-cart'/> Pending</NavDropdown.Item>
-							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => handleLogout()} to="/logout"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
+							<NavDropdown.Item eventKey={4.1} as={NavLink} activeclassname="active" onClick={() => handleLogout()} to="/"><Icofont icon='icofont-logout'/> Logout</NavDropdown.Item>
 				 		  </NavDropdown>
  
 						  {rest.hasrest&&

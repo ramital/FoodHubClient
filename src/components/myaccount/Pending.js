@@ -39,7 +39,7 @@ import JwtUtil from '../../store/JwtUtil';
 		address={post.address}
 		orderProducts={post.itemslist}
 		orderTotal={post.totalPrice} 
-	 
+		status={post.statusName}
 	/>
 
 });

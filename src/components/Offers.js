@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {Row,Col,Container} from 'react-bootstrap';
 import PageTitle from './common/PageTitle';
-import CouponCard from './common/CouponCard';
-import BankOffers from './common/BankOffers';
+import CouponCard from './common/CouponCard'; 
 import { APIConfig } from '../store/APIConfig';
 import axios from 'axios';
 

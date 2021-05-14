@@ -14,7 +14,6 @@ class QuickBite extends React.Component {
       min:this.props.minValue || 0
     };
   }
-  //getgty=()=> {JSON.parse(localStorage.getItem("cartItems")).findIndex((obj => obj.idx == this.props.id)).qty};
  
   IncrementItem = () => {
     if(this.state.quantity >= this.state.max) {

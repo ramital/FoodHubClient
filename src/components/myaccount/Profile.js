@@ -39,9 +39,7 @@ const Profile = (props) => {
          form["instruction"].value = response.data.instruction;
          setProfile(response.data);
       })
-      .catch(error => {
-         console.log("In Profile: " + error);
-      })
+     
 
    },[]);
 

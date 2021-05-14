@@ -1,7 +1,6 @@
 import React from 'react';
 import {Row,Col} from 'react-bootstrap';
-import CouponCard from '../common/CouponCard';
-
+ 
 class Offers extends React.Component {
 
 	render() {

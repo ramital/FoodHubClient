@@ -1,18 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import {Row,Col,Container,Form,InputGroup,Button,Tab,Nav,Image,Badge} from 'react-bootstrap';
-import ItemsCarousel from './common/ItemsCarousel';
-import GalleryCarousel from './common/GalleryCarousel';
+import {Row,Col,Container, Button,Tab,Nav,Image,Badge} from 'react-bootstrap';
+ 
 import CheckoutItem from './common/CheckoutItem';
-import BestSeller from './common/BestSeller';
-import QuickBite from './common/QuickBite';
-import StarRating from './common/StarRating';
-import RatingBar from './common/RatingBar';
-import Review from './common/Review';
+ 
+import QuickBite from './common/QuickBite'; 
 import Icofont from 'react-icofont';
 import { matchPath } from 'react-router'
 import { APIConfig } from '../store/APIConfig';
-import  cartItems  from '../store/cartItems';
+  
  
 import axios from 'axios';
 

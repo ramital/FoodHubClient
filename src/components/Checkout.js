@@ -1,10 +1,7 @@
 import React, { useContext, useState } from 'react';
 import {Link} from 'react-router-dom';
 import {Row,Col,Container,Form,InputGroup,Button,Tab,Nav,ButtonToolbar,ToggleButton,ToggleButtonGroup,Image,OverlayTrigger,Tooltip} from 'react-bootstrap';
-import ItemsCarousel from './common/ItemsCarousel';
-import ChooseAddressCard from './common/ChooseAddressCard';
-import CheckoutItem from './common/CheckoutItem';
-import AddAddressModal from './modals/AddAddressModal';
+
 import Icofont from 'react-icofont';
 import CheckoutList from './common/CheckoutList';
 import { APIConfig } from '../store/APIConfig';
