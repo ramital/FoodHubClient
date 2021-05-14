@@ -1,6 +1,5 @@
-import React, { useContext, useState } from 'react';
-import {Link} from 'react-router-dom';
-import {Row,Col,Container,Form,InputGroup,Button,Tab,Nav,ButtonToolbar,ToggleButton,ToggleButtonGroup,Image,OverlayTrigger,Tooltip} from 'react-bootstrap';
+import React, { useContext } from 'react'; 
+import {Row,Col,Container,Form,InputGroup,Button,Tab,Nav } from 'react-bootstrap';
 
 import Icofont from 'react-icofont';
 import CheckoutList from './common/CheckoutList';
@@ -26,7 +25,7 @@ import axios from 'axios'
 			 
 				axios.post(orderLink, data, {headers}).then(response => {   
 				 
-					if(response.status==200)
+					if(response.status===200)
 				{
 					alert('Order Submited Successfully');
 

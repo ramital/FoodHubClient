@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'; 
-import {Button} from 'react-bootstrap';
+import PropTypes from 'prop-types';  
 import Icofont from 'react-icofont';
 
 class CheckoutItem extends Component {

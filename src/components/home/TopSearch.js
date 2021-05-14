@@ -1,8 +1,5 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import {Row,Col,Container,Form} from 'react-bootstrap';
-import Select2 from 'react-select2-wrapper';
-import Icofont from 'react-icofont';
+import React from 'react'; 
+import {Row,Col,Container} from 'react-bootstrap'; 
 import OwlCarousel from 'react-owl-carousel3';
 import ProductBox from './ProductBox';
 

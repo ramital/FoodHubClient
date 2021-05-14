@@ -72,17 +72,17 @@ import axios from 'axios';
 		}
  
 
-		  function fetchPostsHandler() {
+		  function fetchItemsHandler() {
 			  
 			const headers = {
 				'Access-Control-Allow-Origin': '*', 
 			} 
 				axios(Itemslink+match.params.id, { headers })
 			.then(response => {
-				if(localStorage.getItem("cartItems")!=null)
+				if(localStorage.getItem("cartItems")!==null)
 			   {
 			 	let slt=JSON.parse(localStorage.getItem("cartItems"));
-				if(slt!=null)
+				if(slt!==null)
 				{
 				let newList =[];
 				slt.map(element => { 
@@ -97,13 +97,13 @@ import axios from 'axios';
 		 
 		}
 		 
-		 useEffect(fetchPostsHandler, [props]); 
+		 useEffect(fetchItemsHandler, [props]); 
 
 	
 		 
  const  getQty = ({id,quantity}) => {
      
-		let idx = selecteditems.findIndex((obj => obj.idx == id));
+		let idx = selecteditems.findIndex((obj => obj.idx === id));
 		if(idx>-1)
 		{ 
 			selecteditems[idx].qty=quantity;
@@ -168,10 +168,7 @@ import axios from 'axios';
 			 </div>  
 			}
 		
-	const	getStarValue = ({value}) => {
-    	console.log(value);
-     
-	}
+ 
 	const menu= 	Object.keys(groupedItem).map(key => {
 	  
 	return  <Col md={12}>

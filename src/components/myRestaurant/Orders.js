@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { APIConfig } from '../../store/APIConfig';
 import OrderCard from '../myRestaurant/OrderCard';
-
 import axios from 'axios'
 import JwtUtil from '../../store/JwtUtil';
 
@@ -23,7 +22,7 @@ const Orders =(props)=>{
 	
 	   axios(OrderLink+'/restopending', { headers })
 			.then(response => {
-				console.log(response.data)
+		//		console.log(response.data)
 				setPosts(response.data.orders);
 				})
 			.catch(error => {

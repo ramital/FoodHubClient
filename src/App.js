@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React  from 'react';
 import {Switch, Route} from 'react-router-dom';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -41,19 +41,12 @@ const App = (props) => {
     <Header/>
        <Switch>
           <Route path="/" exact component={Index} />          
-          <Route path="/offers" exact component={Offers} />
-          {/* <Route path="/listing" exact component={List} /> */}
+          <Route path="/offers" exact component={Offers} /> 
           <Route path="/myrestaurant" component={MyRestaurant} />
-          <Route path="/myaccount" component={MyAccount} />
-          {/* <Route path="/404" exact component={NotFound} /> */}
-          {/* <Route path="/extra" exact component={Extra} /> */}
-          <Route path="/login" exact component={Login} />
-          {/* <Route path="/logout" exact component={Logout} /> */}
-          <Route path="/register" exact component={Register} />
-          {/* <Route path="/track-order" exact component={TrackOrder} /> */}
-          {/* <Route path="/invoice" exact component={Invoice} /> */}
-          <Route path="/checkout"  component={Checkout} />
-          {/* <Route path="/thanks" exact component={Thanks} /> */}
+          <Route path="/myaccount" component={MyAccount} /> 
+          <Route path="/login" exact component={Login} /> 
+          <Route path="/register" exact component={Register} />  
+          <Route path="/checkout"  component={Checkout} /> 
           <Route path="/detail"  component={Detail} />
           <Route exact component={NotFound} />
         </Switch>

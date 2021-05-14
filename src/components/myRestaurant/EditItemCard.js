@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useRef } from 'react';
-import { Form, InputGroup, Modal, ButtonToolbar, Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
-import Icofont from 'react-icofont';
+import { Form, Modal, ButtonToolbar, Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap'; 
 import { APIConfig } from '../../store/APIConfig';
 import JwtUtil from '../../store/JwtUtil';
 

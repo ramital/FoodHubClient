@@ -1,47 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {Row,Col,Container} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
-import OwlCarousel from 'react-owl-carousel3';
-import TopSearch from './home/TopSearch';
-import ProductBox from './home/ProductBox';
+import {Row,Col,Container} from 'react-bootstrap'; 
+import TopSearch from './home/TopSearch'; 
 import CardItem from './common/CardItem';
-import SectionHeading from './common/SectionHeading';
-import FontAwesome from './common/FontAwesome';
+import SectionHeading from './common/SectionHeading'; 
 import axios from 'axios';
 import { APIConfig } from '../store/APIConfig';
-
-// class Index extends React.Component {
-
+ 
 	const Index  = (props) => {
  
 		const APIs = useContext(APIConfig);
 		const link = APIs.restaurant;
 		const [posts, setPosts] = useState([]);
    
-		const options={
-		responsive: {
-			0:{
-				items:1,
-			},
-			600:{
-				items:2,
-			},
-			1000: {
-			items: 4,
-			},
-			1200: {
-			items: 4,
-			},
-		},
-
-			lazyLoad: true,
-			pagination: false.toString(),
-			loop: false,
-			dots: true,
-			autoPlay: 2000,
-			nav: true,
-			navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
-	}
+	 
 
 	useEffect(fetchPostsHandler, []);  
    

@@ -28,7 +28,8 @@ const MyAccount= (props) => {
          setState({ username: decoded.sub });
       }
       else {
-         setState({ username: null });
+      props.history.push('/');
+         //setState({ username: null });
       }
    }
       useEffect(componentDidMount, [props]); 

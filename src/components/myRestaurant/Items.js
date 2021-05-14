@@ -58,7 +58,7 @@ const Items= (props)=>{
 			setItems(newItems);
 		})
 		.catch(err => {
-			alert("Can not delete the item: " + activeItem.name);
+			alert("Can not delete the item: (" + activeItem.name+") It is already used in other orders ");
 		})
 
 		hideDeleteModal();		
@@ -67,7 +67,7 @@ const Items= (props)=>{
 	function loadItems(){
 		axios.get(itemsEndpoint, {headers}).then(response => {
 			const restaurantItems = response.data.restaurantItems;
-			console.log(restaurantItems);
+		//	console.log(restaurantItems);
 			setItems(restaurantItems);
 		});
 	}

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types'; 
-import {Link } from 'react-router-dom';
+import PropTypes from 'prop-types';  
 import {Form,Image,Media} from 'react-bootstrap';
 import Icofont from 'react-icofont';
 import axios from 'axios'
@@ -51,21 +50,14 @@ const	OrderCard =(props)=>{
                              </div>
                           </div>
 	                   <Media.Body>
-	                   		{props.deliveredDate?
-	                   			(
-			                      <span className="float-right text-info">Delivered on {props.deliveredDate}  
-			                      	<Icofont icon="check-circled" className="text-success ml-1" />
-			                      </span>
-			                    )
-			                    :""
-	                   		}
+	                   	 
 	                     
 	                      <p className="text-gray mb-1">
 	                      	<Icofont icon="location-arrow" /> {props.address} 
 	                      </p>
 	                      <p className="text-gray mb-3">
 	                      	<Icofont icon="list" /> ORDER #{props.orderNumber} 
-	                      	<Icofont icon="clock-time" className="ml-2" /> {props.orderDate} 
+	                      	<Icofont icon="clock-time" className="ml-2" /> {props.deliveredDate}  
 	                      </p>
 	                      <p className="text-dark">
 	                      	{props.orderProducts} 

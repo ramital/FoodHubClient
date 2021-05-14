@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import {Form,InputGroup,Modal,ButtonToolbar,Button,ToggleButton,ToggleButtonGroup} from 'react-bootstrap';
+import {Form,InputGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { APIConfig } from '../../store/APIConfig';
 import JwtUtil from '../../store/JwtUtil';
@@ -31,7 +31,7 @@ const Profile = (props) => {
 
    function displayData(restaurant){
       const from = formRef.current;
-      console.log(restaurant);
+    //  console.log(restaurant);
       from["name"].value = restaurant.name;
       from["description"].value = restaurant.description;
       from["smalldescription"].value = restaurant.smalldescription;

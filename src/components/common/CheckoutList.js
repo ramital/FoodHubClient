@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import {Link} from 'react-router-dom';
-import {NavDropdown } from 'react-bootstrap';
-import DropDownTitle from './DropDownTitle';
+import React, { useContext, useEffect, useState } from 'react'; 
 import axios from 'axios'; 
-import { APIConfig } from '../../store/APIConfig'; 
-import CartDropdownItem from '../cart/CartDropdownItem';
+import { APIConfig } from '../../store/APIConfig';  
 import CheckoutItem from './CheckoutItem';
 import Icofont from 'react-icofont';
 

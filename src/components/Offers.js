@@ -21,8 +21,7 @@ const Offers= (props)=>{
        
         axios(orderLink, { headers })
             .then(response => {
-				//console.log(response.data)
-				  setPosts(response.data.restaurantOffers);
+			   setPosts(response.data.restaurantOffers);
             })
             .catch(error => {
                 

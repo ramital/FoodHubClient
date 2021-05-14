@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types'; 
-import {Link } from 'react-router-dom';
-import {Image,Media} from 'react-bootstrap';
+import PropTypes from 'prop-types';  
+import {Media} from 'react-bootstrap';
 import Icofont from 'react-icofont';
 
 class OrderCard extends React.Component {
@@ -17,14 +16,7 @@ class OrderCard extends React.Component {
 	                      {this.props.orderTitle} 
 	                      </h5>}
 
-						    	{this.props.deliveredDate?
-	                   			(
-			                      <span className="float-right text-info">Delivered on {this.props.deliveredDate}  
-			                      	<Icofont icon="check-circled" className="text-success ml-1" />
-			                      </span>
-			                    )
-			                    :""
-	                   		}
+						    	 
 					       {this.props.status&&
 	                       <h5 className="text-info float-right mb-1">
 	                      {this.props.status} 

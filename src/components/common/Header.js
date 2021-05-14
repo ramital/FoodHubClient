@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {NavLink,Link, useHistory, Redirect} from 'react-router-dom';
-import {Navbar,Nav,Container,NavDropdown,Image,Badge} from 'react-bootstrap';
-import DropDownTitle from '../common/DropDownTitle';
-import CartDropdownHeader from '../cart/CartDropdownHeader';
+import {NavLink } from 'react-router-dom';
+import {Navbar,Nav,Container,NavDropdown,Image} from 'react-bootstrap';
+import DropDownTitle from '../common/DropDownTitle'; 
 import Icofont from 'react-icofont';
  import JwtUtil from '../../store/JwtUtil';
  import jwt_decode from 'jwt-decode';
@@ -52,7 +51,7 @@ const headers = {
 		}
 	})
 	.catch(error => {
-	   console.log(state);
+	
 	});
 
 
@@ -65,19 +64,13 @@ const UserRestaurent = APIs.UserRestaurent;
  
 
 useEffect(componentDidMount, [props]); 
-
-   const setIsNavExpanded = (isNavExpanded) => {
-      setState({ isNavExpanded: isNavExpanded });
-    }
+ 
 
     const closeMenu = () => {
       setState({ isNavExpanded: false });
     }
 
- 
-
-
-	
+   
 	function handleLogout(){
 		JwtUtil.clearToken();
 		setState({ username: null });

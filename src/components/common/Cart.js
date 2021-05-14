@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import {Link, NavLink} from 'react-router-dom';
+import React, { useContext, useEffect , useState } from 'react';
+import {Link } from 'react-router-dom';
 import {NavDropdown } from 'react-bootstrap';
 import DropDownTitle from '../common/DropDownTitle';
 import axios from 'axios'; 
@@ -51,8 +51,7 @@ const Cart = (props) => {
             
             });
             setitems(newList);
-           // console.log("test",newList);
-          }
+           }
          }
       });
      

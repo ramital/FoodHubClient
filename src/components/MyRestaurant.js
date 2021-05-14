@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Switch,Route} from 'react-router-dom';
-import {NavLink,Link } from 'react-router-dom';
-import {Row,Col,Container,Image} from 'react-bootstrap';
+import {NavLink  } from 'react-router-dom';
+import {Row,Col,Container } from 'react-bootstrap';
 import Orders from './myRestaurant/Orders'; 
 import Profile from './myRestaurant/Profile';
 import EditProfileModal from './modals/EditProfileModal';
 import Items from './myRestaurant/Items';
 
-class MyRestaurant extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      showEditProfile: false
-    };
-  }
-  hideEditProfile = () => this.setState({ showEditProfile: false });
-
-	render() {
+import JwtUtil from '../store/JwtUtil' 
+      const MyRestaurant=(props)=>{
+         
+   function componentDidMount() {				
+	 
+      const token = JwtUtil.getToken();
+      if (!token){
+        
+     
+      props.history.push('/');
+       }
+   }
+      useEffect(componentDidMount, [props]); 
+	 
     	return (
     		<>
-        <EditProfileModal show={this.state.showEditProfile} onHide={this.hideEditProfile}/>
+        <EditProfileModal 
+        //show={this.state.showEditProfile} onHide={this.hideEditProfile}
+        />
         <section className="section pt-4 pb-4 osahan-account-page">
            <Container>
               <Row>
@@ -56,7 +61,6 @@ class MyRestaurant extends React.Component {
     		</>
     	);
     }
-}
 
 
 export default MyRestaurant;
